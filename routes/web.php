@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('dashboard');
 });
+
+Route::get('dashboard', [Controller::class, 'dashboard']);
+
+
+Route::get('categoriesadmin', [CategoryController::class, 'index']);
+Route::get('addcategory', [CategoryController::class, 'create']);
+Route::post('addcategory', [CategoryController::class, 'store']);
