@@ -13,7 +13,6 @@
                     <div class="card-body">
                         <h4 class="card-title"> Add a Category </h4>
 
-{{--                        surround with smth--}}
                         @if(session()->has('error'))
                             <div class="alert alert-danger">
                                 {{session()->get('error')}}
@@ -29,15 +28,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="mdi mdi-plus-circle">Add Category</i>
-                                    </button>
-                                </div>
+                            <button type="submit" class="btn btn-primary mr-2">Add Category</button>
+                            <a href="{{url('categoriesadmin')}}" class="btn btn-dark">Cancel</a>
                             </div>
                         </form>
-{{--                        end surround with smth--}}
                     </div>
                 </div>
             </div>

@@ -32,10 +32,40 @@
                                     <th>{{$categoryItem->name}}</th>
                                     <th></th>
                                     <th>
-                                        <button href="{{url('editcategory/'.$categoryItem->id)}}" title="edit" type="button" class="btn btn-warning btn-rounded btn-fw">Edit</button>
+                                        <a href="{{url('editcategory/'.$categoryItem->id)}}" type="button" class="btn btn-warning btn-rounded btn-fw">Edit</a>
                                     </th>
                                     <th>
-                                        <button href="{{url('deletecategory/'.$categoryItem->id)}}" title="delete" type="button" class="btn btn-danger btn-rounded btn-fw">Delete</button>
+                                        <button type="button" class="btn btn-danger btn-rounded btn-fw" data-toggle="modal" data-target="#exampleModalLong{{$categoryItem->id}}">
+                                            <i class="fa fa-trash"></i> Delete
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalLong{{$categoryItem->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Deletion</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+{{--                                                        CHANGE--}}
+                                                        Are you sure, you want to delete this category?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <form action="{{url('deletecategory/'.$categoryItem->id)}}" method="POST">
+                                                            @csrf
+                                                            {{method_field('DELETE')}}
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fa fa-trash"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </th>
                                 </tr>
                                 @endforeach
