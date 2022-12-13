@@ -54,7 +54,7 @@
                 <div class="collapse" id="auth1">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"> <a class="nav-link" href="{{url('categoriesadmin')}}"> Categories </a></li>
-                        <li class="nav-item"> <a class="nav-link" href="{{url('subcategories')}}"> SubCategories </a></li>
+                        <li class="nav-item"> <a class="nav-link" href="{{url('subcategoriesadmin')}}"> SubCategories </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('filters')}}"> Filters </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('products')}}"> Products </a></li>
                     </ul>

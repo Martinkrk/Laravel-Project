@@ -12,6 +12,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Edit a Category</h4>
+                            {{$category}}
                             @if(session()->has('error'))
                                 <div class="alert alert-danger">
                                     {{session()->get('error')}}

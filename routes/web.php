@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +23,18 @@ Route::get('/', function () {
 Route::get('dashboard', [Controller::class, 'dashboard']);
 
 
+//CATEGORIES
 Route::get('categoriesadmin', [CategoryController::class, 'index']);
 Route::get('addcategory', [CategoryController::class, 'create']);
 Route::post('addcategory', [CategoryController::class, 'store']);
 Route::get('editcategory/{category}', [CategoryController::class, 'edit']);
 Route::post('editcategory/{category}', [CategoryController::class, 'update']);
+Route::delete('deletecategory/{category}', [CategoryController::class, 'destroy']);
+
+//SUBCATEGORIES
+Route::get('subcategoriesadmin', [SubCategoryController::class, 'index']);
+Route::get('addsubcategory', [SubCategoryController::class, 'create']);
+Route::post('addsubcategory', [SubCategoryController::class, 'store']);
+Route::get('editsubcategory/{subCategory}', [SubCategoryController::class, 'edit']);
+Route::post('editsubcategory/{subCategory}', [SubCategoryController::class, 'update']);
+Route::delete('deletesubcategory/{subCategory}', [SubCategoryController::class, 'destroy']);
