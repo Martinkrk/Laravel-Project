@@ -20,4 +20,9 @@ class SubCategory extends Model
     {
         return $this->belongsTo('App\Models\Category', 'category_id');
     }
+
+    public function filter_subcategory()
+    {
+        return $this->hasMany('App\Models\FilterSubcategory');
+    }
 }

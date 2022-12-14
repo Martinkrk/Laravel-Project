@@ -55,7 +55,9 @@
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"> <a class="nav-link" href="{{url('categoriesadmin')}}"> Categories </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('subcategoriesadmin')}}"> SubCategories </a></li>
-                        <li class="nav-item"> <a class="nav-link" href="{{url('filters')}}"> Filters </a></li>
+                        <li class="nav-item"> <a class="nav-link" href="{{url('filtersadmin')}}"> Filters </a></li>
+                        <li class="nav-item"> <a class="nav-link" href="{{url('filtersubcategoriesadmin')}}"> FilterSubcategories </a></li>
+                        <li class="nav-item"> <a class="nav-link" href="{{url('productfiltersadmin')}}"> ProductFilter </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('products')}}"> Products </a></li>
                     </ul>
                 </div>
