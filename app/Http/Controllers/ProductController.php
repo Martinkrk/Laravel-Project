@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SubCategory;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -10,11 +11,13 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        $products = Product::get();
+        $subcategories = SubCategory::get();
+        return view('adminpanel/products.index', compact('subcategories', 'products'));
     }
 
     /**
@@ -24,7 +27,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $subcategories = SubCategory::get();
+        return view('adminpanel/products.create', compact('subcategories'));
     }
 
     /**
@@ -35,7 +39,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+            'discount' => 'nullable'
+        ]);
+
+        Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'discount' => $request->discount,
+            'subcategory_id' => $request->subcategory
+        ]);
+        return redirect('productsadmin');
     }
 
     /**
@@ -57,7 +77,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $subcategories = SubCategory::get();
+        return view('/adminpanel/products.edit', compact('subcategories', 'product'));
     }
 
     /**
@@ -69,7 +90,24 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+            'discount' => 'nullable'
+        ]);
+
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'discount' => $request->discount,
+            'subcategory_id' => $request->subcategory
+        ]);
+
+        return redirect('productsadmin');
     }
 
     /**
@@ -80,6 +118,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect('productsadmin');
     }
 }

@@ -42,7 +42,17 @@ class ProductFilterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'value' => 'required'
+        ]);
+
+        ProductFilter::create([
+            'product_id' => $request->product,
+            'filter_id' => $request->filter,
+            'value' => $request->value
+        ]);
+
+        return redirect('productfiltersadmin');
     }
 
     /**

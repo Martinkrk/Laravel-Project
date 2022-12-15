@@ -17,10 +17,11 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th style="width: 5%">filter ID</th>
-                                    <th style="width: 25%">filter name</th>
-                                    <th style="width: 5%">subcategory ID</th>
-                                    <th style="width: 25%">subcategory name</th>
+                                    <th style="width: 5%">Product ID</th>
+                                    <th style="width: 20%">Product name</th>
+                                    <th style="width: 5%">Filter ID</th>
+                                    <th style="width: 20%">Filter name</th>
+                                    <th style="width: 20%">Value</th>
                                     <th style="width: 5%"></th>
                                 </tr>
                                 </thead>
@@ -29,12 +30,13 @@
                                 @foreach($productfilters as $productfilterItem)
                                     @foreach($filters as $filterItem)
                                         @foreach($products as $productItem)
-                                            @if($productfilterItem->filter_id == $filterItem->id && $productfilterItem->subcategory_id == $productItem->id)
+                                            @if($productfilterItem->filter_id == $filterItem->id && $productfilterItem->product_id == $productItem->id)
                                                 <tr>
                                                     <th>{{$productItem->id}}</th>
                                                     <th>{{$productItem->name}}</th>
                                                     <th>{{$filterItem->id}}</th>
                                                     <th>{{$filterItem->name}}</th>
+                                                    <th>{{$productfilterItem->value}}</th>
                                                     <th>
                                                         <button type="button" class="btn btn-danger btn-rounded btn-fw" data-toggle="modal" data-target="#exampleModalLong{{$productfilterItem->id}}">
                                                             <i class="fa fa-trash"></i> Delete

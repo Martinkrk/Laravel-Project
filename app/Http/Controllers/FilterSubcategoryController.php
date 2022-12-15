@@ -19,7 +19,7 @@ class FilterSubcategoryController extends Controller
         $filtersubcategories = FilterSubcategory::get();
         $filters = Filter::get();
         $subcategories = SubCategory::get();
-        return view('adminpanel/filtercategory.index', compact('filtersubcategories', 'filters', 'subcategories'));
+        return view('adminpanel/filtersubcategory.index', compact('filtersubcategories', 'filters', 'subcategories'));
     }
 
     /**
@@ -31,7 +31,7 @@ class FilterSubcategoryController extends Controller
     {
         $filters = Filter::get();
         $subcategories = SubCategory::get();
-        return view('adminpanel/filtercategory.create', compact('filters', 'subcategories'));
+        return view('adminpanel/filtersubcategory.create', compact('filters', 'subcategories'));
     }
 
     /**

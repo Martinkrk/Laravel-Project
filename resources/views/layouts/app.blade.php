@@ -58,13 +58,13 @@
                         <li class="nav-item"> <a class="nav-link" href="{{url('filtersadmin')}}"> Filters </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('filtersubcategoriesadmin')}}"> FilterSubcategories </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('productfiltersadmin')}}"> ProductFilter </a></li>
-                        <li class="nav-item"> <a class="nav-link" href="{{url('products')}}"> Products </a></li>
+                        <li class="nav-item"> <a class="nav-link" href="{{url('productsadmin')}}"> Products </a></li>
                     </ul>
                 </div>
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" href="{{url('comments')}}">
+                <a class="nav-link" href="{{url('commentsadmin')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-comment"></i>
               </span>
@@ -73,23 +73,30 @@
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" href="{{url('users')}}">
+                <a class="nav-link" data-toggle="collapse" href="#auth2" aria-expanded="false" aria-controls="auth">
               <span class="menu-icon">
-                <i class="mdi mdi-account"></i>
+                <i class="mdi mdi-table-large"></i>
               </span>
-                    <span class="menu-title">Users</span>
+                    <span class="menu-title">Manage Users</span>
+                    <i class="menu-arrow"></i>
                 </a>
+                <div class="collapse" id="auth2">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"> <a class="nav-link" href="{{url('users')}}"> Users </a></li>
+                        <li class="nav-item"> <a class="nav-link" href="{{url('roles')}}"> Roles </a></li>
+                    </ul>
+                </div>
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <a class="nav-link" data-toggle="collapse" href="#auth3" aria-expanded="false" aria-controls="auth">
               <span class="menu-icon">
                 <i class="mdi mdi-security"></i>
               </span>
                     <span class="menu-title">User Pages</span>
                     <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="auth">
+                <div class="collapse" id="auth3">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"> <a class="nav-link" href="{{url('blank.html')}}"> Blank Page </a></li>
                         <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
