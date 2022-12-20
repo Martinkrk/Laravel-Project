@@ -44,17 +44,19 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required',
             'stock' => 'required',
-            'discount' => 'nullable'
+            'discount' => 'nullable',
         ]);
 
-        Product::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'discount' => $request->discount,
-            'subcategory_id' => $request->subcategory
-        ]);
+        $data = $request->all();
+        $filename = $request->file('image')->getClientOriginalName();
+        $data['image'] = $filename;
+        Product::create($data);
+        $file = $request->file('image');
+
+        if($filename) {
+            $file->move('../public/images', $filename);
+        }
+
         return redirect('productsadmin');
     }
 
@@ -95,17 +97,20 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required',
             'stock' => 'required',
-            'discount' => 'nullable'
+            'discount' => 'nullable',
         ]);
 
-        $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'discount' => $request->discount,
-            'subcategory_id' => $request->subcategory
-        ]);
+        $data = $request->all();
+        if($request->file('image')){
+            $filename = $request->file('image')->getClientOriginalName();
+            $data['image'] = $filename;
+
+            $file = $request->file('image');
+            if($filename){
+                $file->move('../public/images/', $filename);
+            }
+        }
+        $product->update($data);
 
         return redirect('productsadmin');
     }

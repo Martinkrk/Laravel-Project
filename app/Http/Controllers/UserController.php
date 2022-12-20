@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 use Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 class UserController extends Controller
 {
@@ -43,16 +45,16 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|unique:users|max:255|string|email',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'confpassword' => 'required'
+            'password_confirmation' => 'required'
         ]);
 
         User::create([
-            'username' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role
+            'role_id' => $request->role_id,
+            'name' => $request->name
         ]);
         return redirect('users');
     }
@@ -72,7 +74,7 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(User $user)
     {
@@ -85,11 +87,35 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+
+        if (!isset($request->role_id)) $request->role_id = Auth::user()->role_id;
+        if ($request->password) {
+            $request->validate([
+                'password' => 'required|string|min:6|confirmed',
+                'password_confirmation' => 'required'
+            ]);
+
+            $user->update([
+                'name' => $request->name,
+                'password' => Hash::make($request->password),
+                'role_id' => $request->role_id
+            ]);
+        }
+        else {
+            $user->update([
+                'name' => $request->name,
+                'role_id' => $request->role_id
+            ]);
+        }
+
+        return redirect('users');
     }
 
     /**
