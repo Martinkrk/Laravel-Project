@@ -12,20 +12,20 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
     <!-- Bootstrap -->
-    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="{{asset('main/css/bootstrap.min.css')}}"/>
 
     <!-- Slick -->
-    <link type="text/css" rel="stylesheet" href="css/slick.css"/>
-    <link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
+    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick.css')}}"/>
+    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick-theme.css')}}"/>
 
     <!-- nouislider -->
-    <link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
+    <link type="text/css" rel="stylesheet" href="{{asset('main/css/nouislider.min.css')}}"/>
 
     <!-- Font Awesome Icon -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{asset('main/css/font-awesome.min.css')}}">
 
     <!-- Custom stlylesheet -->
-    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="{{asset('main/css/style.css')}}"/>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -42,7 +42,7 @@
     <div id="top-header">
         <div class="container">
             <ul class="header-links pull-left">
-                <li><a href="#"><i class="fa fa-phone"></i> 57685775</a></li>
+                <li><a href="#"><i class="fa fa-phone"></i> 57865775</a></li>
                 <li><a href="#"><i class="fa fa-envelope-o"></i> Martin.Gerstman@ivkhk.ee</a></li>
                 <li><a href="#"><i class="fa fa-facebook"></i>Facebook</a></li>
                 <li><a href="#"><i class="fa fa-wordpress"></i>Wordpress</a></li>
@@ -187,6 +187,8 @@
 </nav>
 <!-- /NAVIGATION -->
 
+@yield('content')
+
 <!-- FOOTER -->
 <footer id="footer">
     <!-- top footer -->
@@ -200,7 +202,7 @@
                         <h3 class="footer-title">About Us</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
                         <ul class="footer-links">
-                            <li><a href="#"><i class="fa fa-phone"></i>57685775</a></li>
+                            <li><a href="#"><i class="fa fa-phone"></i>57865775</a></li>
                             <li><a href="#"><i class="fa fa-envelope-o"></i>Martin.Gerstman@ivkhk.ee</a></li>
                         </ul>
                     </div>
@@ -277,12 +279,12 @@
 <!-- /FOOTER -->
 
 <!-- jQuery Plugins -->
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/slick.min.js"></script>
-<script src="js/nouislider.min.js"></script>
-<script src="js/jquery.zoom.min.js"></script>
-<script src="js/main.js"></script>
+<script src="{{asset('main/js/jquery.min.js')}}"></script>
+<script src="{{asset('main/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('main/js/slick.min.js')}}"></script>
+<script src="{{asset('main/js/nouislider.min.js')}}"></script>
+<script src="{{asset('main/js/jquery.zoom.min.js')}}"></script>
+<script src="{{asset('main/js/main.js')}}"></script>
 
 </body>
 </html>

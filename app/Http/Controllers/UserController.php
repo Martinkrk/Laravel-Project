@@ -7,8 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 use Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Testing\Fluent\Concerns\Has;
+use Auth;
 
 class UserController extends Controller
 {
