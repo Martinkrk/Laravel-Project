@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
@@ -95,5 +96,22 @@ class CategoryController extends Controller
     {
         $category->delete();
         return redirect('categoriesadmin');
+    }
+
+    /**
+     * MAIN SECTION
+     */
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+
+    public function mainPage()
+    {
+        $categories = Category::orderBy('id', 'asc')->get();
+        $subcategories = SubCategory::orderBy('id', 'asc')->get();
+        $topproducts = Product::orderBy('bought', 'desc')->take(5)->get();
+        $newproducts = Product::orderBy('updated_at', 'desc')->take(5)->get();
+        return view('start', compact('categories', 'subcategories', 'topproducts', 'newproducts'));
     }
 }

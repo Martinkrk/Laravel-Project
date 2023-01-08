@@ -23,9 +23,10 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('start');
-});
+//Route::get('/', function () {
+//    return view('start');
+//});
+Route::get('/', [CategoryController::class, 'mainPage']);
 
 Route::group(['middleware'=>['auth']], function () {
 
@@ -57,12 +58,6 @@ Route::group(['middleware'=>['auth']], function () {
             Route::get('editfilter/{filter}', [FilterController::class, 'edit']);
             Route::post('editfilter/{filter}', [FilterController::class, 'update']);
             Route::delete('deletefilter/{filter}', [FilterController::class, 'destroy']);
-
-            //FILTERSSUBCATEGORIES
-            Route::get('filtersubcategoriesadmin', [FilterSubcategoryController::class, 'index']);
-            Route::get('addfiltersubcategory', [FilterSubcategoryController::class, 'create']);
-            Route::post('addfiltersubcategory', [FilterSubcategoryController::class, 'store']);
-            Route::delete('deletefiltersubcategory/{filterSubcategory}', [FilterSubcategoryController::class, 'destroy']);
 
             //PRODUCTFILTERS
             Route::get('productfiltersadmin', [ProductFilterController::class, 'index']);
@@ -113,12 +108,11 @@ Route::group(['middleware'=>['auth']], function () {
 });
 
 
+Route::get('catalog', [ProductController::class, 'catalog']);
 
-
-
+//Auth
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'authenticate']);
 Route::get('logout', [AuthController::class, 'logout']);
-
 Route::get('signup', [AuthController::class, 'signup']);
 

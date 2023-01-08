@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Voltaic - Admin</title>
+    <title>Voltaic Prosaic - Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{asset('vendors/mdi/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('vendors/css/vendor.bundle.base.css')}}">
@@ -27,8 +27,8 @@
     <!-- partial:partials/_sidebar.html -->
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-            <a class="sidebar-brand brand-logo" href="{{url('dashboard')}}"><img src="{{asset('adminpanel/images/logo.svg')}}" alt="logo" /></a>
-            <a class="sidebar-brand brand-logo-mini" href="{{url('dashboard')}}"><img src="{{asset('adminpanel/images/logo-mini.svg')}}" alt="logo" /></a>
+            <a class="sidebar-brand brand-logo" href="{{url('dashboard')}}"><img src="{{asset('adminpanel/images/logo.png')}}" alt="logo" /></a>
+            <a class="sidebar-brand brand-logo-mini" href="{{url('dashboard')}}"><img src="{{asset('adminpanel/images/logo-mini.png')}}" alt="logo" /></a>
         </div>
         <ul class="nav">
             <li class="nav-item nav-category">
@@ -56,7 +56,6 @@
                         <li class="nav-item"> <a class="nav-link" href="{{url('categoriesadmin')}}"> Categories </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('subcategoriesadmin')}}"> SubCategories </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('filtersadmin')}}"> Filters </a></li>
-                        <li class="nav-item"> <a class="nav-link" href="{{url('filtersubcategoriesadmin')}}"> FilterSubcategories </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('productfiltersadmin')}}"> ProductFilter </a></li>
                         <li class="nav-item"> <a class="nav-link" href="{{url('productsadmin')}}"> Products </a></li>
                     </ul>

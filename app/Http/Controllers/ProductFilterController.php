@@ -16,7 +16,7 @@ class ProductFilterController extends Controller
      */
     public function index()
     {
-        $productfilters = ProductFilter::get();
+        $productfilters = ProductFilter::orderBy('product_id', 'asc')->get();
         $products = Product::get();
         $filters = Filter::get();
         return view('adminpanel/productfilter.index', compact('productfilters', 'products', 'filters'));
@@ -29,7 +29,7 @@ class ProductFilterController extends Controller
      */
     public function create()
     {
-        $products = Product::get();
+        $products = Product::orderBy('updated_at', 'desc')->get();
         $filters = Filter::get();
         return view('adminpanel/productfilter/create', compact('products', 'filters'));
     }

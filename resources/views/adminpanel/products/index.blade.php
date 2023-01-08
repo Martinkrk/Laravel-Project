@@ -19,10 +19,10 @@
                                 <tr>
                                     <th style="width: 5%">ID</th>
                                     <th style="width: 25%">Name</th>
-                                    <th style="width: 40%">Description</th>
                                     <th style="width: 5%">Price</th>
                                     <th style="width: 5%">Stock</th>
                                     <th style="width: 5%">Discount</th>
+                                    <th style="width: 5%">Bought</th>
                                     <th style="width: 5%">Subcategory</th>
                                     <th style="width: 5%"></th>
                                     <th style="width: 5%"></th>
@@ -34,10 +34,10 @@
                                 <tr>
                                     <th>{{$productItem->id}}</th>
                                     <th>{{$productItem->name}}</th>
-                                    <th>{{$productItem->description}}</th>
                                     <th>{{$productItem->price}}</th>
                                     <th>{{$productItem->stock}}</th>
                                     <th>{{$productItem->discount}}</th>
+                                    <th>{{$productItem->bought}}</th>
                                     <th>
                                         @foreach($subcategories as $subcategoryItem)
                                             @if($subcategoryItem->id == $productItem->subcategory_id)

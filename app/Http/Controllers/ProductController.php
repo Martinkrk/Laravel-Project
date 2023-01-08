@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -41,7 +42,6 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'description' => 'required',
             'price' => 'required',
             'stock' => 'required',
             'discount' => 'nullable',
@@ -94,7 +94,6 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'description' => 'required',
             'price' => 'required',
             'stock' => 'required',
             'discount' => 'nullable',
@@ -125,5 +124,16 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect('productsadmin');
+    }
+
+    //MAIN
+
+    public function catalog()
+    {
+        $categories = Category::get();
+        $subcategories = SubCategory::get();
+        $products = Product::get();
+
+        return view('main/catalog', compact('categories', 'subcategories', 'products'));
     }
 }

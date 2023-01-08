@@ -65,7 +65,7 @@
                 <div class="col-md-3">
                     <div class="header-logo">
                         <a href="#" class="logo">
-                            <img src="./img/logo.png" alt="">
+                            <img src="{{asset('main/img/logo.png')}}" alt="">
                         </a>
                     </div>
                 </div>
@@ -75,12 +75,7 @@
                 <div class="col-md-6">
                     <div class="header-search">
                         <form>
-                            <select class="input-select">
-                                <option value="0">All Categories</option>
-                                <option value="1">Category 01</option>
-                                <option value="1">Category 02</option>
-                            </select>
-                            <input class="input" placeholder="Search here">
+                            <input class="input-select col-md-9" placeholder="Search here">
                             <button class="search-btn">Search</button>
                         </form>
                     </div>
@@ -171,13 +166,21 @@
         <div id="responsive-nav">
             <!-- NAV -->
             <ul class="main-nav nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">Computers</a></li>
-                <li><a href="#">Laptops</a></li>
-                <li><a href="#">Smartphones</a></li>
-                <li><a href="#">Cameras</a></li>
-                <li><a href="#">Accessories</a></li>
-                <li><a href="#">Monitors</a></li>
+                @foreach($categories as $categoryItem)
+                    <li class="nav-item menu-items">
+                        <div class="dropdownOnHover">
+                            <button href="#" class="dropbtnOnHover">{{$categoryItem->name}}
+                            </button>
+                            <div class="dropdownOnHover-content">
+                                @foreach($subcategories as $subcategoryItem)
+                                    @if($subcategoryItem->category_id == $categoryItem->id)
+                                        <a href="{{url('catalog/'.$subcategoryItem->id)}}">{{$subcategoryItem->name}}</a>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
             </ul>
             <!-- /NAV -->
         </div>
@@ -190,7 +193,7 @@
 @yield('content')
 
 <!-- FOOTER -->
-<footer id="footer">
+<footer id="footer" class="mt-2">
     <!-- top footer -->
     <div class="section">
         <!-- container -->

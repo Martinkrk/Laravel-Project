@@ -48,6 +48,23 @@ Table OF Contents
 ------------------------------------*/
 
 /*=========================================================
+	00 -> CUSTOM
+===========================================================*/
+
+/*----------------------------*\
+	Margins
+\*----------------------------*/
+
+.mt-1 {
+    margin-top: 15px;
+}
+
+.mt-2 {
+    margin-top: 30px;
+}
+
+
+/*=========================================================
 	01 -> GENERAL
 ===========================================================*/
 
@@ -619,6 +636,50 @@ textarea.input {
 	03 -> Navigation
 ===========================================================*/
 
+/*=========================================================
+	033 -> CUSTOM Navigation
+===========================================================*/
+
+.dropdownOnHover {
+    float: left;
+    overflow: hidden;
+}
+.dropdownOnHover .dropbtnOnHover {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+.dropdownOnHover-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 50;
+}
+
+.dropdownOnHover-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdownOnHover-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdownOnHover:hover .dropdownOnHover-content {
+    display: block;
+}
+
 #navigation {
   background: #FFF;
   border-bottom: 2px solid #E4E7ED;
@@ -633,16 +694,16 @@ textarea.input {
   margin-left: 30px
 }
 
-.main-nav>li>a {
+.main-nav>li>.dropdownOnHover>button {
   padding: 20px 0px;
 }
 
-.main-nav>li>a:hover, .main-nav>li>a:focus, .main-nav>li.active>a {
+.main-nav>li>.dropdownOnHover>button:hover, .main-nav>li>button:focus, .main-nav>li.active>button {
   color: #D10024;
   background-color: transparent;
 }
 
-.main-nav>li>a:after {
+.main-nav>li>.dropdownOnHover>button:after {
   content: "";
   display: block;
   width: 0%;
@@ -652,7 +713,7 @@ textarea.input {
   transition: 0.2s all;
 }
 
-.main-nav>li>a:hover:after, .main-nav>li>a:focus:after, .main-nav>li.active>a:after {
+.main-nav>li>.dropdownOnHover>button:hover:after, .main-nav>li.active>.dropdownOnHover>button:after {
   width: 100%;
 }
 
@@ -858,7 +919,7 @@ textarea.input {
   -webkit-box-shadow: 0px 0px 0px 0px #E4E7ED, 0px 0px 0px 1px #E4E7ED;
   box-shadow: 0px 0px 0px 0px #E4E7ED, 0px 0px 0px 1px #E4E7ED;
   -webkit-transition: 0.2s all;
-  transition: 0.2s all;
+  transition: 0.2s all;;
 }
 
 .product:hover {
@@ -868,10 +929,17 @@ textarea.input {
 
 .product .product-img {
   position: relative;
+    padding-top: 20px;
+    margin: auto;
+    height: 220px;
+    width: 220px;
 }
 
 .product .product-img>img {
-  width: 100%;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .product .product-img .product-label {
@@ -904,12 +972,15 @@ textarea.input {
   background-color: #FFF;
   text-align: center;
   z-index: 20;
+    min-height: 240px;
+    max-height: 240px;
 }
 
 .product .product-body .product-category {
   text-transform: uppercase;
   font-size: 12px;
   color: #8D99AE;
+    min-height: 34px;
 }
 
 .product .product-body .product-name {
@@ -1099,7 +1170,6 @@ textarea.input {
 
 .product-widget .product-body {
   padding-left: 75px;
-  min-height: 60px;
 }
 
 .product-widget .product-body .product-category {

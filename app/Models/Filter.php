@@ -15,11 +15,6 @@ class Filter extends Model
         'name'
     ];
 
-    public function filter_subcategory()
-    {
-        return $this->hasMany('App\Models\FilterSubcategory');
-    }
-
     public function product_filter()
     {
         return $this->hasMany('App\Models\ProductFilter');
