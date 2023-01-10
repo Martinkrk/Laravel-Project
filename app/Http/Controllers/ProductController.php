@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Filter;
+use App\Models\ProductFilter;
 use App\Models\SubCategory;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -128,12 +131,55 @@ class ProductController extends Controller
 
     //MAIN
 
-    public function catalog()
+    public function catalog(Request $request)
     {
         $categories = Category::get();
         $subcategories = SubCategory::get();
-        $products = Product::get();
 
-        return view('main/catalog', compact('categories', 'subcategories', 'products'));
+        if ($request['search'] != null) {
+            $searchText = $request['search'];
+            $products = Product::where('name', 'like', '%'.$searchText.'%')
+                ->where('stock', '>', '0')
+                ->get();
+        }
+        elseif ($request['filters'] != null) {
+            $qb = DB::table('product_filter');
+//            $requestfilters = $request['filters'];
+            foreach($request->check as $rf) {
+                $rf = explode('*', $rf);
+                $qb->orWhere(function ($query) use ($rf) {
+                   $query->where('filter_id', '=', $rf[0])
+                       ->where('value', '=', $rf[1]);
+                });
+            }
+            $productfilters = $qb->select('product_id')->get();
+            $products = Product::whereIn('id', $productfilters);
+        }
+        else {
+            $products = Product::get();
+        }
+
+        $selectedfilters = DB::table('product_filter')
+            ->select('filter_id')
+            ->distinct()
+            ->whereIn('product_id', $products->map(function ($prod) {
+                return collect($prod->toArray())
+                    ->only(['id'])
+                    ->all();
+            }));
+
+        $filters = Filter::whereIn('id', $selectedfilters)->get();
+
+        $filterValues = DB::table('product_filter')
+            ->select('filter_id', 'filtervalue')
+            ->whereIn('product_id', $products->map(function ($prod) {
+                return collect($prod->toArray())
+                    ->only(['id'])
+                    ->all();
+            }))
+            ->groupByRaw('filtervalue, filter_id')
+            ->get();
+
+        return view('main/catalog', compact('categories', 'subcategories', 'products', 'filters', 'filterValues'));
     }
 }

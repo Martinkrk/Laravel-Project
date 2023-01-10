@@ -74,9 +74,9 @@
                 <!-- SEARCH BAR -->
                 <div class="col-md-6">
                     <div class="header-search">
-                        <form>
-                            <input class="input-select col-md-9" placeholder="Search here">
-                            <button class="search-btn">Search</button>
+                        <form action="{{url('catalog')}}" method="GET">
+                            <input name="search" class="input-select col-md-9" placeholder="Search here" required>
+                            <button type="submit" class="search-btn">Search</button>
                         </form>
                     </div>
                 </div>
