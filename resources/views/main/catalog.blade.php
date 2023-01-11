@@ -10,50 +10,60 @@
             <!-- ASIDE -->
             <div id="aside" class="col-md-3">
 
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Price</h3>
-                    <div class="price-filter">
-                        <div id="price-slider"></div>
-                        <div class="input-number price-min">
-                            <input id="price-min" type="number">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
-                        </div>
-                        <span>-</span>
-                        <div class="input-number price-max">
-                            <input id="price-max" type="number">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
+                <form action="{{url('catalog')}}" method="GET">
+                    <div class="aside">
+                        <button type="submit" class="primary-btn btn-sm order-submit">Apply Filters</button>
+                        <button type="reset" class="secondary-btn btn-sm order-submit">Clear</button>
+                    </div>
+                    <!-- aside Widget -->
+                    <div class="aside">
+                        <h3 class="aside-title">Price</h3>
+                        <div class="price-filter">
+                            <div id="price-slider"></div>
+                            <div class="input-number price-min">
+                                <input id="price-min" type="number">
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+                            </div>
+                            <span>-</span>
+                            <div class="input-number price-max">
+                                <input id="price-max" type="number">
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- /aside Widget -->
+                    <!-- /aside Widget -->
 
-                <!-- aside Widget -->
-                <div class="aside">
-                    <form action="{{url('catalog')}}" method="GET">
-                        <button type="submit" class="search-btn">Apply Filters</button>
+                    <!-- aside Widget -->
+                    <div class="aside">
                         @foreach($filters as $filter)
-                        <h3 class="aside-title">{{$filter->name}}</h3>
-                        @foreach($filterValues as $filterValue)
-                            @if($filter->id == $filterValue->filter_id)
-                            <div class="checkbox-filter">
-                                <div class="input-checkbox">
-                                    <input type="checkbox" id="{{$filterValue->filter_id}}{{$filterValue->filtervalue}}" name="filters[]" value="{{$filterValue->filter_id}}*{{$filterValue->filtervalue}}">
-                                    <label for="{{$filterValue->filter_id}}{{$filterValue->filtervalue}}">
-                                        <span></span>
-                                        {{$filterValue->filtervalue}}
-                                        <small></small>
-                                    </label>
+                            <h3 class="aside-title">{{$filter->name}}</h3>
+                            @foreach($filterValues as $filterValue)
+                                @if($filter->id == $filterValue->filter_id)
+                                <div class="checkbox-filter">
+                                    <div class="input-checkbox">
+                                        <input type="checkbox" id="{{$filterValue->filter_id}}{{$filterValue->filtervalue}}" name="filters[]" value="{{$filterValue->filter_id}}*{{$filterValue->filtervalue}}"
+                                        @if($checkedfilters != null)
+                                            @foreach($checkedfilters as $checkedfilter)
+                                                @if($checkedfilter == $filterValue->filter_id.'*'.$filterValue->filtervalue)
+                                                    checked
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        >
+                                        <label for="{{$filterValue->filter_id}}{{$filterValue->filtervalue}}">
+                                            <span></span>
+                                            {{$filterValue->filtervalue}}
+                                            <small></small>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
                                 @endif
                             @endforeach
                         @endforeach
                     </div>
                     <!-- /aside Widget -->
-
                 </form>
             </div>
             <!-- /ASIDE -->
@@ -63,6 +73,7 @@
                 <!-- store top filter -->
                 <div class="store-filter clearfix">
                     <div class="store-sort">
+                        <form action="{{url('catalog')}}" method="GET" class="form-inline">
                         <label>
                             Sort By:
                             <select class="input-select">
@@ -70,14 +81,18 @@
                                 <option value="1">Position</option>
                             </select>
                         </label>
+                        </form>
 
-                        <label>
-                            Show:
-                            <select class="input-select">
-                                <option value="0">20</option>
-                                <option value="1">50</option>
-                            </select>
-                        </label>
+                        <form action="{{url('catalog')}}" method="GET" class="form-inline">
+                            <label>
+                                Show:
+                                <select name="show" class="input-select" onchange="submit();">
+                                    @foreach($shows as $showItem)
+                                        <option value="{{$showItem}}" @if($showItem == $selectedshow) selected @endif>{{$showItem}}</option>
+                                    @endforeach
+                                </select>
+                            </label>
+                        </form>
                     </div>
                 </div>
                 <!-- /store top filter -->
@@ -132,14 +147,7 @@
 
                 <!-- store bottom filter -->
                 <div class="store-filter clearfix">
-                    <span class="store-qty">Showing 20-100 products</span>
-                    <ul class="store-pagination">
-                        <li class="active">1</li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                    </ul>
+                        {{$products->links()}}
                 </div>
                 <!-- /store bottom filter -->
             </div>

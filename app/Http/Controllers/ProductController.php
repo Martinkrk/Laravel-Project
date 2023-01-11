@@ -133,36 +133,55 @@ class ProductController extends Controller
 
     public function catalog(Request $request)
     {
+        //PRODUCTS AND CATEGORIES
         $categories = Category::get();
         $subcategories = SubCategory::get();
+        $productsinstock = Product::where('stock', '>', '0')->get();
+
+        //SHOW AND SORT
+        $shows = ['2','4'];
+        $selectedshow = $request['show'];
+
+        $checkedfilters = null;
 
         if ($request['search'] != null) {
             $searchText = $request['search'];
             $products = Product::where('name', 'like', '%'.$searchText.'%')
                 ->where('stock', '>', '0')
-                ->get();
+                ->paginate(2)
+                ->appends(request()->query());
         }
         elseif ($request['filters'] != null) {
+            $checkedfilters = $request['filters'];
             $qb = DB::table('product_filter');
-//            $requestfilters = $request['filters'];
-            foreach($request->check as $rf) {
+            foreach($checkedfilters as $rf) {
                 $rf = explode('*', $rf);
                 $qb->orWhere(function ($query) use ($rf) {
                    $query->where('filter_id', '=', $rf[0])
-                       ->where('value', '=', $rf[1]);
+                       ->where('filtervalue', '=', $rf[1]);
                 });
             }
-            $productfilters = $qb->select('product_id')->get();
-            $products = Product::whereIn('id', $productfilters);
+            $productfilters = $qb->select('product_id');
+            $products = Product::whereIn('id', $productfilters)
+                ->paginate(2)
+                ->appends(request()->query());
         }
         else {
-            $products = Product::get();
+            if ($request['show'] != null) {
+            $products = Product::where('stock', '>', '0')
+                ->paginate($request['show']);
+            }
+            else {
+                $products = Product::where('stock', '>', '0')
+                    ->paginate(2)
+                    ->appends(request()->query());
+            }
         }
 
         $selectedfilters = DB::table('product_filter')
             ->select('filter_id')
             ->distinct()
-            ->whereIn('product_id', $products->map(function ($prod) {
+            ->whereIn('product_id', $productsinstock->map(function ($prod) {
                 return collect($prod->toArray())
                     ->only(['id'])
                     ->all();
@@ -172,7 +191,7 @@ class ProductController extends Controller
 
         $filterValues = DB::table('product_filter')
             ->select('filter_id', 'filtervalue')
-            ->whereIn('product_id', $products->map(function ($prod) {
+            ->whereIn('product_id', $productsinstock->map(function ($prod) {
                 return collect($prod->toArray())
                     ->only(['id'])
                     ->all();
@@ -180,6 +199,6 @@ class ProductController extends Controller
             ->groupByRaw('filtervalue, filter_id')
             ->get();
 
-        return view('main/catalog', compact('categories', 'subcategories', 'products', 'filters', 'filterValues'));
+        return view('main/catalog', compact('categories', 'subcategories', 'products', 'filters', 'filterValues', 'checkedfilters', 'shows', 'selectedshow'));
     }
 }

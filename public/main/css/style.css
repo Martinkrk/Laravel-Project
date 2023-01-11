@@ -121,9 +121,28 @@ ul, ol {
   transition: 0.2s all;
 }
 
+.secondary-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #e1e1e1;
+    border: none;
+    border-radius: 40px;
+    color: #000000;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    -webkit-transition: 0.2s all;
+    transition: 0.2s all;
+}
+
 .primary-btn:hover, .primary-btn:focus {
   opacity: 0.9;
   color: #FFF;
+}
+
+.secondary-btn:hover, .secondary-btn:focus {
+    opacity: 0.9;
+    color: #000000;
 }
 
 /*----------------------------*\
@@ -2199,6 +2218,10 @@ textarea.input {
 .custom-dots .slick-dots {
   position: static;
   margin: 15px 0px;
+}
+
+.pag-thingy {
+    background-color: red;
 }
 
 /*=========================================================
