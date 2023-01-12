@@ -139,43 +139,83 @@ class ProductController extends Controller
         $productsinstock = Product::where('stock', '>', '0')->get();
 
         //SHOW AND SORT
+        //show
         $shows = ['2','4'];
-        $selectedshow = $request['show'];
+        if ($request['show'] != null) {
+            $selectedshow = $request['show'];
+        }
+        else {
+            $selectedshow = $shows[0];
+        }
+
+        //sort
+        $sorts = ['Popular', 'New', 'Price (low to high)', 'Price (high to low)'];
+
+        if ($request['sort'] != null) {
+            $selectedsort = $request['sort'];
+        }
+        else {
+            $selectedsort = $sorts[0];
+        }
+
+        $sortquery = ['', 'desc'];
+        if ($selectedsort == 'Popular') {
+            $sortquery[0] = 'bought';
+        }
+        elseif ($selectedsort == 'New') {
+            $sortquery[0] = 'updated_at';
+        }
+        elseif ($selectedsort == 'Price (low to high)') {
+            $sortquery[0] = 'price';
+            $sortquery[1] = 'asc';
+        }
+        elseif ($selectedsort == 'Price (high to low)') {
+            $sortquery[0] = 'price';
+        }
+        else {
+            $sortquery = ['bought', 'desc'];
+        }
 
         $checkedfilters = null;
+        $checkedcategoryfilters = null;
 
         if ($request['search'] != null) {
             $searchText = $request['search'];
             $products = Product::where('name', 'like', '%'.$searchText.'%')
                 ->where('stock', '>', '0')
-                ->paginate(2)
+                ->orderBy($sortquery[0], $sortquery[1])
+                ->paginate($selectedshow)
                 ->appends(request()->query());
         }
-        elseif ($request['filters'] != null) {
-            $checkedfilters = $request['filters'];
-            $qb = DB::table('product_filter');
-            foreach($checkedfilters as $rf) {
-                $rf = explode('*', $rf);
-                $qb->orWhere(function ($query) use ($rf) {
-                   $query->where('filter_id', '=', $rf[0])
-                       ->where('filtervalue', '=', $rf[1]);
-                });
+        elseif ($request['filters'] != null || $request['categoryfilters'] != null) {
+                $checkedfilters = $request['filters'];
+                $qb = DB::table('product_filter');
+            if ($request['filters'] != null) {
+                foreach ($checkedfilters as $rf) {
+                    $rf = explode('*', $rf);
+                    $qb->orWhere(function ($query) use ($rf) {
+                        $query->where('filter_id', '=', $rf[0])
+                            ->where('filtervalue', '=', $rf[1]);
+                    });
+                }
             }
+            if ($request['categoryfilters'] != null) {
+                $checkedcategoryfilters = $request['categoryfilters'];
+                $qb->whereIn('subcategory_id', $request['categoryfilters']);
+            }
+
             $productfilters = $qb->select('product_id');
             $products = Product::whereIn('id', $productfilters)
-                ->paginate(2)
+                ->where('stock', '>', '0')
+                ->orderBy($sortquery[0], $sortquery[1])
+                ->paginate($selectedshow)
                 ->appends(request()->query());
         }
         else {
-            if ($request['show'] != null) {
             $products = Product::where('stock', '>', '0')
-                ->paginate($request['show']);
-            }
-            else {
-                $products = Product::where('stock', '>', '0')
-                    ->paginate(2)
-                    ->appends(request()->query());
-            }
+                ->orderBy($sortquery[0], $sortquery[1])
+                ->paginate($selectedshow)
+                ->appends(request()->query());
         }
 
         $selectedfilters = DB::table('product_filter')
@@ -199,6 +239,6 @@ class ProductController extends Controller
             ->groupByRaw('filtervalue, filter_id')
             ->get();
 
-        return view('main/catalog', compact('categories', 'subcategories', 'products', 'filters', 'filterValues', 'checkedfilters', 'shows', 'selectedshow'));
+        return view('main/catalog', compact('categories', 'subcategories', 'products', 'filters', 'filterValues', 'checkedfilters', 'shows', 'selectedshow', 'sorts', 'selectedsort', 'checkedcategoryfilters'));
     }
 }

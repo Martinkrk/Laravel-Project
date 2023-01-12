@@ -5,12 +5,12 @@
 <div class="section">
     <!-- container -->
     <div class="container">
+                <form action="{{url('catalog/'.null)}}" method="GET">
         <!-- row -->
         <div class="row">
             <!-- ASIDE -->
             <div id="aside" class="col-md-3">
 
-                <form action="{{url('catalog')}}" method="GET">
                     <div class="aside">
                         <button type="submit" class="primary-btn btn-sm order-submit">Apply Filters</button>
                         <button type="reset" class="secondary-btn btn-sm order-submit">Clear</button>
@@ -37,6 +37,28 @@
 
                     <!-- aside Widget -->
                     <div class="aside">
+{{--                        <h3 class="aside-title">Categories</h3>--}}
+{{--                        @foreach($subcategories as $subcategoryFilterItem)--}}
+{{--                            <div class="checkbox-filter">--}}
+{{--                                <div class="input-checkbox">--}}
+{{--                                    <input type="checkbox" id="{{$subcategoryFilterItem->id}}" name="categoryfilters[]" value="{{$subcategoryFilterItem->id}}"--}}
+{{--                                       @if($checkedfilters != null)--}}
+{{--                                           @foreach($checkedcategoryfilters as $checkedcategoryfilter)--}}
+{{--                                               @if($checkedcategoryfilter == $subcategoryFilterItem->id)--}}
+{{--                                                   checked--}}
+{{--                                                @endif--}}
+{{--                                          @endforeach--}}
+{{--                                        @endif--}}
+{{--                                    >--}}
+{{--                                    <label for="{{$subcategoryFilterItem->id}}">--}}
+{{--                                        <span></span>--}}
+{{--                                        {{$subcategoryFilterItem->name}}--}}
+{{--                                        <small></small>--}}
+{{--                                    </label>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        @endforeach--}}
+
                         @foreach($filters as $filter)
                             <h3 class="aside-title">{{$filter->name}}</h3>
                             @foreach($filterValues as $filterValue)
@@ -64,7 +86,7 @@
                         @endforeach
                     </div>
                     <!-- /aside Widget -->
-                </form>
+{{--                </form>--}}
             </div>
             <!-- /ASIDE -->
 
@@ -73,17 +95,15 @@
                 <!-- store top filter -->
                 <div class="store-filter clearfix">
                     <div class="store-sort">
-                        <form action="{{url('catalog')}}" method="GET" class="form-inline">
                         <label>
                             Sort By:
-                            <select class="input-select">
-                                <option value="0">Popular</option>
-                                <option value="1">Position</option>
+                            <select name="sort" class="input-select"onchange="submit();">
+                                @foreach($sorts as $sortItem)
+                                    <option value="{{$sortItem}}" @if($sortItem == $selectedsort) selected @endif>{{$sortItem}}</option>
+                                @endforeach
                             </select>
                         </label>
-                        </form>
 
-                        <form action="{{url('catalog')}}" method="GET" class="form-inline">
                             <label>
                                 Show:
                                 <select name="show" class="input-select" onchange="submit();">
@@ -92,7 +112,6 @@
                                     @endforeach
                                 </select>
                             </label>
-                        </form>
                     </div>
                 </div>
                 <!-- /store top filter -->
@@ -154,6 +173,7 @@
             <!-- /STORE -->
         </div>
         <!-- /row -->
+</form>
     </div>
     <!-- /container -->
 </div>

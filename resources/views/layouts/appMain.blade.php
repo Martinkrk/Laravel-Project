@@ -12,11 +12,11 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
     <!-- Bootstrap -->
-    <link type="text/css" rel="stylesheet" href="{{asset('main/css/bootstrap.min.css')}}"/>
+{{--    <link type="text/css" rel="stylesheet" href="{{asset('main/css/bootstrap.min.css')}}"/>--}}
 
     <!-- Slick -->
-    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick.css')}}"/>
-    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick-theme.css')}}"/>
+{{--    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick.css')}}"/>--}}
+{{--    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick-theme.css')}}"/>--}}
 
     <!-- nouislider -->
     <link type="text/css" rel="stylesheet" href="{{asset('main/css/nouislider.min.css')}}"/>
@@ -174,7 +174,10 @@
                             <div class="dropdownOnHover-content">
                                 @foreach($subcategories as $subcategoryItem)
                                     @if($subcategoryItem->category_id == $categoryItem->id)
+{{--                                        <form action="{{url('catalog')}}" method="GET">--}}
+{{--                                            <input type="submit" id="{{$subcategoryItem->id}}" name="categoryfiltero[{{$subcategoryItem->id}}]" value="{{$subcategoryItem->name}}">--}}
                                         <a href="{{url('catalog/'.$subcategoryItem->id)}}">{{$subcategoryItem->name}}</a>
+{{--                                        </form>--}}
                                     @endif
                                 @endforeach
                             </div>
