@@ -5,7 +5,7 @@
 <div class="section">
     <!-- container -->
     <div class="container">
-                <form action="{{url('catalog/'.null)}}" method="GET">
+                <form action="{{url('catalog/'.$subCategory)}}" method="GET">
         <!-- row -->
         <div class="row">
             <!-- ASIDE -->
@@ -37,28 +37,6 @@
 
                     <!-- aside Widget -->
                     <div class="aside">
-{{--                        <h3 class="aside-title">Categories</h3>--}}
-{{--                        @foreach($subcategories as $subcategoryFilterItem)--}}
-{{--                            <div class="checkbox-filter">--}}
-{{--                                <div class="input-checkbox">--}}
-{{--                                    <input type="checkbox" id="{{$subcategoryFilterItem->id}}" name="categoryfilters[]" value="{{$subcategoryFilterItem->id}}"--}}
-{{--                                       @if($checkedfilters != null)--}}
-{{--                                           @foreach($checkedcategoryfilters as $checkedcategoryfilter)--}}
-{{--                                               @if($checkedcategoryfilter == $subcategoryFilterItem->id)--}}
-{{--                                                   checked--}}
-{{--                                                @endif--}}
-{{--                                          @endforeach--}}
-{{--                                        @endif--}}
-{{--                                    >--}}
-{{--                                    <label for="{{$subcategoryFilterItem->id}}">--}}
-{{--                                        <span></span>--}}
-{{--                                        {{$subcategoryFilterItem->name}}--}}
-{{--                                        <small></small>--}}
-{{--                                    </label>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        @endforeach--}}
-
                         @foreach($filters as $filter)
                             <h3 class="aside-title">{{$filter->name}}</h3>
                             @foreach($filterValues as $filterValue)

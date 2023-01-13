@@ -12,11 +12,11 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
     <!-- Bootstrap -->
-{{--    <link type="text/css" rel="stylesheet" href="{{asset('main/css/bootstrap.min.css')}}"/>--}}
+    <link type="text/css" rel="stylesheet" href="{{asset('main/css/bootstrap.min.css')}}"/>
 
     <!-- Slick -->
-{{--    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick.css')}}"/>--}}
-{{--    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick-theme.css')}}"/>--}}
+    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick.css')}}"/>
+    <link type="text/css" rel="stylesheet" href="{{asset('main/css/slick-theme.css')}}"/>
 
     <!-- nouislider -->
     <link type="text/css" rel="stylesheet" href="{{asset('main/css/nouislider.min.css')}}"/>
@@ -49,7 +49,7 @@
             </ul>
             <ul class="header-links pull-right">
                 <li><a href="#"><i class="fa fa-euro"></i> EUR</a></li>
-                <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+                <li><a href=""><i class="fa fa-user-o"></i> My Account</a></li>
             </ul>
         </div>
     </div>
@@ -64,7 +64,7 @@
                 <!-- LOGO -->
                 <div class="col-md-3">
                     <div class="header-logo">
-                        <a href="#" class="logo">
+                        <a href="{{url('/')}}" class="logo">
                             <img src="{{asset('main/img/logo.png')}}" alt="">
                         </a>
                     </div>
@@ -174,10 +174,7 @@
                             <div class="dropdownOnHover-content">
                                 @foreach($subcategories as $subcategoryItem)
                                     @if($subcategoryItem->category_id == $categoryItem->id)
-{{--                                        <form action="{{url('catalog')}}" method="GET">--}}
-{{--                                            <input type="submit" id="{{$subcategoryItem->id}}" name="categoryfiltero[{{$subcategoryItem->id}}]" value="{{$subcategoryItem->name}}">--}}
                                         <a href="{{url('catalog/'.$subcategoryItem->id)}}">{{$subcategoryItem->name}}</a>
-{{--                                        </form>--}}
                                     @endif
                                 @endforeach
                             </div>
@@ -218,7 +215,6 @@
                     <div class="footer">
                         <h3 class="footer-title">Categories</h3>
                         <ul class="footer-links">
-                            <!--									<li><a href="#">Hot deals</a></li>-->
                             <li><a href="#">Laptops</a></li>
                             <li><a href="#">Smartphones</a></li>
                             <li><a href="#">Cameras</a></li>
@@ -235,9 +231,6 @@
                         <ul class="footer-links">
                             <li><a href="#">About Us</a></li>
                             <li><a href="#">Contact Us</a></li>
-                            <!--									<li><a href="#">Privacy Policy</a></li>-->
-                            <!--									<li><a href="#">Orders and Returns</a></li>-->
-                            <!--									<li><a href="#">Terms & Conditions</a></li>-->
                         </ul>
                     </div>
                 </div>
@@ -249,8 +242,6 @@
                             <li><a href="#">My Account</a></li>
                             <li><a href="#">View Cart</a></li>
                             <li><a href="#">Wishlist</a></li>
-                            <!--									<li><a href="#">Track My Order</a></li>-->
-                            <!--									<li><a href="#">Help</a></li>-->
                         </ul>
                     </div>
                 </div>

@@ -131,7 +131,11 @@ class ProductController extends Controller
 
     //MAIN
 
-    public function catalog(Request $request)
+    public function search() {
+
+    }
+
+    public function catalog(Request $request, SubCategory $subCategory)
     {
         //PRODUCTS AND CATEGORIES
         $categories = Category::get();
@@ -207,12 +211,14 @@ class ProductController extends Controller
             $productfilters = $qb->select('product_id');
             $products = Product::whereIn('id', $productfilters)
                 ->where('stock', '>', '0')
+                ->where('subcategory_id', '=', $subCategory)
                 ->orderBy($sortquery[0], $sortquery[1])
                 ->paginate($selectedshow)
                 ->appends(request()->query());
         }
         else {
             $products = Product::where('stock', '>', '0')
+                ->where('subcategory_id', '=', $subCategory)
                 ->orderBy($sortquery[0], $sortquery[1])
                 ->paginate($selectedshow)
                 ->appends(request()->query());
@@ -239,6 +245,6 @@ class ProductController extends Controller
             ->groupByRaw('filtervalue, filter_id')
             ->get();
 
-        return view('main/catalog', compact('categories', 'subcategories', 'products', 'filters', 'filterValues', 'checkedfilters', 'shows', 'selectedshow', 'sorts', 'selectedsort', 'checkedcategoryfilters'));
+        return view('main/catalog', compact('categories', 'subcategories', 'products', 'filters', 'filterValues', 'checkedfilters', 'shows', 'selectedshow', 'sorts', 'selectedsort', 'checkedcategoryfilters', 'subCategory'));
     }
 }

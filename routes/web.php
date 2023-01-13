@@ -108,7 +108,7 @@ Route::group(['middleware'=>['auth']], function () {
 });
 
 
-Route::get('catalog', [ProductController::class, 'catalog']);
+Route::get('catalog/{subCategory}', [ProductController::class, 'catalog']);
 
 //Auth
 Route::get('login', [AuthController::class, 'login'])->name('login');
