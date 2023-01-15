@@ -62,10 +62,18 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label for="image" class="col-sm-12 ">Image</label>
+                                <label for="image" class="col-sm-12 ">Main Image</label>
                                 <div class="col-sm-12">
-                                    <input type="file" name="image" class="">
+                                    <input type="file" name="image" class="" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="image" class="col-sm-12 ">Secondary Images</label>
+                                <div class="col-sm-12">
+                                    <input type="file" name="images[]" class="" multiple>
                                 </div>
                             </div>
 

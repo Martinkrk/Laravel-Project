@@ -5,7 +5,7 @@
 <div class="section">
     <!-- container -->
     <div class="container">
-                <form action="{{url('catalog/'.$subCategory)}}" method="GET">
+                <form action="{{url('catalog/'. $subCategory->id)}}" method="GET">
         <!-- row -->
         <div class="row">
             <!-- ASIDE -->
@@ -38,7 +38,16 @@
                     <!-- aside Widget -->
                     <div class="aside">
                         @foreach($filters as $filter)
-                            <h3 class="aside-title">{{$filter->name}}</h3>
+
+
+                            @foreach($filterValues as $filterValueHeading)
+                                @if($filter->id == $filterValueHeading->filter_id)
+                                    <h3 class="aside-title">{{$filter->name}}</h3>
+                                    @break
+                                @endif
+                            @endforeach
+
+
                             @foreach($filterValues as $filterValue)
                                 @if($filter->id == $filterValue->filter_id)
                                 <div class="checkbox-filter">

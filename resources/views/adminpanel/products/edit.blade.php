@@ -64,10 +64,22 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="image" class="col-sm-12 ">Image</label>
+                                <label for="image" class="col-sm-12 ">Main Image</label>
                                 <div class="col-sm-12">
-                                    <img class="thumbnail" style="width: 200px" src="{{'/images/'.$product->image}}">
                                     <input type="file" name="image" class="">
+                                    <img class="thumbnail" style="width: 200px" src="{{'/images/'.$product->image}}">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="image" class="col-sm-12 ">Secondary Images</label>
+                                <div class="col-sm-12">
+                                    <input type="file" name="images[]" class="" multiple>
+                                    @foreach($images as $imageItem)
+                                        @if($imageItem->product_id == $product->id)
+                                            <img class="thumbnail" style="width: 200px" src="{{'/images/'.$imageItem->image}}">
+                                        @endif
+                                    @endforeach
                                 </div>
                             </div>
 

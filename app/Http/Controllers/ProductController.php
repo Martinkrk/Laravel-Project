@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Filter;
+use App\Models\Image;
 use App\Models\ProductFilter;
 use App\Models\SubCategory;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
@@ -20,8 +22,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::get();
+        $images = Image::get();
         $subcategories = SubCategory::get();
-        return view('adminpanel/products.index', compact('subcategories', 'products'));
+        return view('adminpanel/products.index', compact('subcategories', 'products', 'images'));
     }
 
     /**
@@ -51,13 +54,15 @@ class ProductController extends Controller
         ]);
 
         $data = $request->all();
-        $filename = $request->file('image')->getClientOriginalName();
-        $data['image'] = $filename;
-        Product::create($data);
-        $file = $request->file('image');
+        $product = Product::create($data);
 
-        if($filename) {
-            $file->move('../public/images', $filename);
+        foreach (($request->file('images')) as $imagefile) {
+            $filename = $imagefile->getClientOriginalName();
+            Image::create(['image' => $filename, 'product_id' => $product->id]);
+
+            if ($filename) {
+                $imagefile->move('../public/images/', $filename);
+            }
         }
 
         return redirect('productsadmin');
@@ -71,7 +76,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $categories = Category::get();
+        $subcategories = SubCategory::get();
+
+        return view('main/view', compact('categories', 'subcategories'));
     }
 
     /**
@@ -83,7 +91,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $subcategories = SubCategory::get();
-        return view('/adminpanel/products.edit', compact('subcategories', 'product'));
+        $images = Image::get();
+        return view('/adminpanel/products.edit', compact('subcategories', 'product', 'images'));
     }
 
     /**
@@ -102,16 +111,18 @@ class ProductController extends Controller
             'discount' => 'nullable',
         ]);
 
-        $data = $request->all();
-        if($request->file('image')){
-            $filename = $request->file('image')->getClientOriginalName();
-            $data['image'] = $filename;
+        if($request->file('images')){
+            foreach (($request->file('images')) as $imagefile) {
+                $filename = $imagefile->getClientOriginalName();
+                Image::create(['image' => $filename, 'product_id' => $product->id]);
 
-            $file = $request->file('image');
-            if($filename){
-                $file->move('../public/images/', $filename);
+                if ($filename) {
+                    $imagefile->move('../public/images/', $filename);
+                }
             }
         }
+        $request->request->remove('images');
+        $data = $request->all();
         $product->update($data);
 
         return redirect('productsadmin');
@@ -131,6 +142,13 @@ class ProductController extends Controller
 
     //MAIN
 
+    public function cart() {
+        $categories = Category::get();
+        $subcategories = SubCategory::get();
+
+        return view('main/cart', compact('categories', 'subcategories'));
+    }
+
     public function search() {
 
     }
@@ -140,7 +158,9 @@ class ProductController extends Controller
         //PRODUCTS AND CATEGORIES
         $categories = Category::get();
         $subcategories = SubCategory::get();
-        $productsinstock = Product::where('stock', '>', '0')->get();
+        $productsinstock = Product::where('stock', '>', '0')
+            ->where('subcategory_id', '=', $subCategory->id)
+            ->get();
 
         //SHOW AND SORT
         //show
@@ -211,14 +231,14 @@ class ProductController extends Controller
             $productfilters = $qb->select('product_id');
             $products = Product::whereIn('id', $productfilters)
                 ->where('stock', '>', '0')
-                ->where('subcategory_id', '=', $subCategory)
+                ->where('subcategory_id', '=', $subCategory->id)
                 ->orderBy($sortquery[0], $sortquery[1])
                 ->paginate($selectedshow)
                 ->appends(request()->query());
         }
         else {
             $products = Product::where('stock', '>', '0')
-                ->where('subcategory_id', '=', $subCategory)
+                ->where('subcategory_id', '=', $subCategory->id)
                 ->orderBy($sortquery[0], $sortquery[1])
                 ->paginate($selectedshow)
                 ->appends(request()->query());

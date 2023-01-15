@@ -30,4 +30,9 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\SubCategory', 'subcategory_id');
     }
+
+    public function images()
+    {
+        return $this->hasMany('App\Models\Image');
+    }
 }

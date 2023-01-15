@@ -109,6 +109,8 @@ Route::group(['middleware'=>['auth']], function () {
 
 
 Route::get('catalog/{subCategory}', [ProductController::class, 'catalog']);
+Route::get('view/{product}', [ProductController::class, 'show']);
+Route::get('cart', [ProductController::class, 'cart']);
 
 //Auth
 Route::get('login', [AuthController::class, 'login'])->name('login');
