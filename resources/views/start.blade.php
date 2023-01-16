@@ -96,7 +96,7 @@
                                                 @endif
                                             @endforeach
                                         </p>
-                                        <h3 class="product-name"><a href="#">{{$topproductItem->name}}</a></h3>
+                                        <h3 class="product-name"><a href="{{url('view/'.$topproductItem->id)}}">{{$topproductItem->name}}</a></h3>
                                         @if($topproductItem->discount)
                                             <h4 class="product-price">{{$topproductItem->price * (1 - $topproductItem->discount / 100)}} <del class="product-old-price">{{$topproductItem->price}}</del></h4>
                                         @else
@@ -111,7 +111,7 @@
                                         </div>
                                         <div class="product-btns">
                                             <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">view</span></button>
+                                            <button class="quick-view"><a href="{{url('view/'.$topproductItem->id)}}" class="fa fa-eye"></a><span class="tooltipp">view</span></button>
                                         </div>
                                     </div>
                                     <div class="add-to-cart">
@@ -176,7 +176,7 @@
                                                     @endif
                                                 @endforeach
                                             </p>
-                                            <h3 class="product-name"><a href="#">{{$newproductItem->name}}</a></h3>
+                                            <h3 class="product-name"><a href="{{url('view/'.$newproductItem->id)}}">{{$newproductItem->name}}</a></h3>
                                             @if($newproductItem->discount)
                                                 <h4 class="product-price">{{$newproductItem->price * (1 - $newproductItem->discount / 100)}} <del class="product-old-price">{{$newproductItem->price}}</del></h4>
                                             @else
@@ -191,7 +191,7 @@
                                             </div>
                                             <div class="product-btns">
                                                 <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-                                                <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">view</span></button>
+                                                <button class="quick-view"><a href="{{url('view/'.$newproductItem->id)}}" class="fa fa-eye"></a><span class="tooltipp">view</span></button>
                                             </div>
                                         </div>
                                         <div class="add-to-cart">

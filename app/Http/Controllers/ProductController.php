@@ -78,8 +78,13 @@ class ProductController extends Controller
     {
         $categories = Category::get();
         $subcategories = SubCategory::get();
+        $images = Image::where('product_id', '=', $product->id)->get();
+        $productsubcategory = SubCategory::where('id', '=', $product->subcategory_id)->first();
+        $productfilters = ProductFilter::where('product_id', '=', $product->id)->get();
+        $productfilterhalf = ceil(count($productfilters)/2)+1;
+        $filters = Filter::get();
 
-        return view('main/view', compact('categories', 'subcategories'));
+        return view('main/view', compact('categories', 'subcategories', 'images', 'product', 'productsubcategory', 'productfilters', 'filters', 'productfilterhalf'));
     }
 
     /**

@@ -35,4 +35,9 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\Image');
     }
+
+    public function rating()
+    {
+        return $this->hasMany('App\Models\Rating');
+    }
 }

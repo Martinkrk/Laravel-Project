@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductFilterController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\AuthController;
 
 /*
@@ -104,6 +105,7 @@ Route::group(['middleware'=>['auth']], function () {
 
     //MAIN
         Route::get('account/{user}', [UserController::class, 'edit']);
+        Route::post('addrating', [RatingController::class, 'store']);
 
 });
 

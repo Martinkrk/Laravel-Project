@@ -48,8 +48,16 @@
                 <li><a href="#"><i class="fa fa-wordpress"></i>Wordpress</a></li>
             </ul>
             <ul class="header-links pull-right">
-                <li><a href="#"><i class="fa fa-euro"></i> EUR</a></li>
-                <li><a href=""><i class="fa fa-user-o"></i> My Account</a></li>
+                @if(Auth::check())
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                        <li><a href="{{url('dashboard')}}"><i class="fa fa-columns"></i>Admin Panel</a></li>
+                    @endif
+                    <li><a href="{{url('profile/'.Auth::user()->id)}}"><i class="fa fa-user-o"></i>{{Auth::user()->name}}</a></li>
+                        <li><a href="{{url('logout')}}"><i class="fa fa-sign-out"></i>Log Out</a></li>
+                @else
+                    <li><a href="{{url('login')}}"><i class="fa fa-user-o"></i>Log In</a></li>
+                    <li><a href="{{url('signup')}}"><i class="fa fa-user-o"></i>Sign Up</a></li>
+                @endif
             </ul>
         </div>
     </div>

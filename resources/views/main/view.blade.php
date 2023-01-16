@@ -10,11 +10,14 @@
             <!-- Product main img -->
             <div class="col-md-5 col-md-push-2">
                 <div id="product-main-img">
-
                     <div class="product-preview">
-                        <img src="./img/product01.png" alt="">
+                        <img src="{{asset('../images/'.$product->image)}}" alt="Product Image">
                     </div>
-
+                    @foreach($images as $imageItem)
+                        <div class="product-preview">
+                            <img src="{{asset('../images/'.$imageItem->image)}}" alt="Product Image">
+                        </div>
+                    @endforeach
                 </div>
             </div>
             <!-- /Product main img -->
@@ -22,11 +25,14 @@
             <!-- Product thumb imgs -->
             <div class="col-md-2  col-md-pull-5">
                 <div id="product-imgs">
-
                     <div class="product-preview">
-                        <img src="./img/product01.png" alt="">
+                        <img src="{{asset('../images/'.$product->image)}}" alt="Product Image">
                     </div>
-
+                    @foreach($images as $imageItem)
+                        <div class="product-preview">
+                            <img src="{{asset('../images/'.$imageItem->image)}}" alt="Product Image">
+                        </div>
+                    @endforeach
                 </div>
             </div>
             <!-- /Product thumb imgs -->
@@ -34,7 +40,7 @@
             <!-- Product details -->
             <div class="col-md-5">
                 <div class="product-details">
-                    <h2 class="product-name">product name goes here</h2>
+                    <h2 class="product-name">{{$product->name}}</h2>
                     <div>
                         <div class="product-rating">
                             <i class="fa fa-star"></i>
@@ -46,8 +52,16 @@
                         <a class="review-link" href="#">10 Review(s)</a>
                     </div>
                     <div>
-                        <h3 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h3>
-                        <span class="product-available">In Stock</span>
+                        @if($product->discount)
+                            <h4 class="product-price">{{$product->price * (1 - $product->discount / 100)}} <del class="product-old-price">{{$product->price}}</del></h4>
+                        @else
+                            <h4 class="product-price">{{$product->price}}</h4>
+                        @endif
+                        @if($product->stock < 1)
+                            <span class="product-available">Sold Out</span>
+                        @else
+                            <span class="product-available">In Stock</span>
+                        @endif
                     </div>
 
                     <div class="add-to-cart">
@@ -68,7 +82,7 @@
 
                     <ul class="product-links">
                         <li>Category:</li>
-                        <li><a href="#">Headphones</a></li>
+                        <li><a href="{{url('catalog/'.$productsubcategory->id)}}">{{$productsubcategory->name}}</a></li>
                     </ul>
 
                 </div>
@@ -80,9 +94,8 @@
                 <div id="product-tab">
                     <!-- product tab nav -->
                     <ul class="tab-nav">
-                        <li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
-                        <li><a data-toggle="tab" href="#tab2">Details</a></li>
-                        <li><a data-toggle="tab" href="#tab3">Reviews (3)</a></li>
+                        <li class="active"><a data-toggle="tab" href="#tab1">Details</a></li>
+                        <li><a data-toggle="tab" href="#tab2">Reviews (1)</a></li>
                     </ul>
                     <!-- /product tab nav -->
 
@@ -90,26 +103,42 @@
                     <div class="tab-content">
                         <!-- tab1  -->
                         <div id="tab1" class="tab-pane fade in active">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <h4>.</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="list-group">
+                                            @foreach($productfilters as $productfilterItem)
+                                                @foreach($filters as $filterItem)
+                                                    @if($productfilterItem->filter->id == $filterItem->id)
+                                                        @if($loop->parent->index+1 == $productfilterhalf)
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-group">
+                                                        @endif
+                                                        <li class="list-group-item @if($loop->parent->index % 2 == 0) active @endif">
+                                                            <b>{{$filterItem->name}}</b> - {{$productfilterItem->filtervalue}}
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+
+                            @if($product->description != null)
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4>Description</h4>
+                                        <p>{{$product->description}}</p>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                         <!-- /tab1  -->
 
                         <!-- tab2  -->
                         <div id="tab2" class="tab-pane fade in">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /tab2  -->
-
-                        <!-- tab3  -->
-                        <div id="tab3" class="tab-pane fade in">
                             <div class="row">
                                 <!-- Rating -->
                                 <div class="col-md-3">
@@ -262,28 +291,40 @@
                                 <!-- Review Form -->
                                 <div class="col-md-3">
                                     <div id="review-form">
-                                        <form class="review-form">
-                                            <input class="input" type="text" placeholder="Your Name">
-                                            <input class="input" type="email" placeholder="Your Email">
-                                            <textarea class="input" placeholder="Your Review"></textarea>
-                                            <div class="input-rating">
-                                                <span>Your Rating: </span>
-                                                <div class="stars">
-                                                    <input id="star5" name="rating" value="5" type="radio"><label for="star5"></label>
-                                                    <input id="star4" name="rating" value="4" type="radio"><label for="star4"></label>
-                                                    <input id="star3" name="rating" value="3" type="radio"><label for="star3"></label>
-                                                    <input id="star2" name="rating" value="2" type="radio"><label for="star2"></label>
-                                                    <input id="star1" name="rating" value="1" type="radio"><label for="star1"></label>
+                                        @if(Auth::check())
+                                            @if(session()->has('error'))
+                                                <div class="alert alert-danger">
+                                                    {{session()->get('error')}}
                                                 </div>
-                                            </div>
-                                            <button class="primary-btn">Submit</button>
-                                        </form>
+                                            @endif
+                                            <form action="{{url('addrating')}}" method="POST" class="review-form">
+                                                @csrf
+                                                <input class="input" type="hidden" name="product_id" value="{{$product->id}}" readonly>
+                                                <textarea class="input" name="message" placeholder="Your Review" required></textarea>
+                                                <div class="input-rating">
+                                                    <span>Your Rating: </span>
+                                                    <div class="stars">
+                                                        <input id="star5" name="rating" value="5" type="radio"><label for="star5"></label>
+                                                        <input id="star4" name="rating" value="4" type="radio"><label for="star4"></label>
+                                                        <input id="star3" name="rating" value="3" type="radio"><label for="star3"></label>
+                                                        <input id="star2" name="rating" value="2" type="radio"><label for="star2"></label>
+                                                        <input id="star1" name="rating" value="1" type="radio" checked><label for="star1"></label>
+                                                    </div>
+                                                </div>
+                                                <button class="primary-btn">Submit</button>
+                                            </form>
+                                        @else
+                                            <b>Only registered users may leave reviews</b>
+                                            <br><br>
+                                            <a href="{{url('login')}}" class="primary-btn">Log in</a></a>
+                                            <a href="{{url('signup')}}" class="primary-btn">Sign up</a>
+                                        @endif
                                     </div>
                                 </div>
                                 <!-- /Review Form -->
                             </div>
                         </div>
-                        <!-- /tab3  -->
+                        <!-- /tab2  -->
                     </div>
                     <!-- /product tab content  -->
                 </div>

@@ -29,6 +29,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Role', 'role_id');
     }
 
+    public function rating()
+    {
+        return $this->hasMany('App\Models\Rating');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

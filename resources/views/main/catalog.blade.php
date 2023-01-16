@@ -118,7 +118,7 @@
                                 @endif
                             </div>
                             <div class="product-body">
-                                <h3 class="product-name"><a href="#">{{$productItem->name}}</a></h3>
+                                <h3 class="product-name"><a href="{{url('view/'.$productItem->id)}}">{{$productItem->name}}</a></h3>
                                 @if($productItem->discount)
                                     <h4 class="product-price">{{$productItem->price * (1 - $productItem->discount / 100)}} <del class="product-old-price">{{$productItem->price}}</del></h4>
                                 @else
@@ -133,7 +133,7 @@
                                 </div>
                                 <div class="product-btns">
                                     <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-                                    <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">view</span></button>
+                                    <button class="quick-view"><a href="{{url('view/'.$productItem->id)}}" class="fa fa-eye"></a><span class="tooltipp">view</span></button>
                                 </div>
                             </div>
                             <div class="add-to-cart">
