@@ -73,7 +73,7 @@
                                 <span class="qty-down">-</span>
                             </div>
                         </div>
-                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                        <a href="{{url('addtocart/'.$product->id)}}" class="btn add-to-cart-btn"><i class="fa fa-shopping-cart"></i>add to cart</a>
                     </div>
 
                     <ul class="product-btns">

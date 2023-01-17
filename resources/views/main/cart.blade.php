@@ -19,32 +19,43 @@
                             <div><strong>TOTAL</strong></div>
                         </div>
                         <div class="order-products">
-                            <div class="order-col">
-                                <div>1x Product Name Goes Here</div>
-                                <div>$980.00</div>
-                            </div>
-                            <div class="order-col">
-                                <div>2x Product Name Goes Here</div>
-                                <div>$980.00</div>
-                            </div>
+
+                            <?php $total = 0 ?>
+                            @if(session('cart'))
+                                @foreach(session('cart') as $product => $details)
+                                    <?php $total += $details['price'] * $details['quantity'] ?>
+                                    <div class="order-col">
+                                        <div><b>{{$details['quantity']}}x</b> {{$details['name']}}</div>
+                                        <div>{{$details['price']}}</div>
+                                        <div class="product-details">
+                                            <div class="add-to-cart">
+                                                <div class="qty-label">
+                                                    <div class="input-number">
+                                                        <form action="{{url('updatecart')}}" method="POST">
+                                                            <input type="hidden" value="{{$product}}" name="id" readonly>
+                                                            <input type="number" value="{{$details['quantity']}}" name="quantity">
+                                                            <span class="qty-up">+</span>
+                                                            <span class="qty-down">-</span>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <button class="add-to-cart-btn"><i class="fa fa-remove"></i>remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                         <div class="order-col">
-                            <div>Shiping</div>
+                            <div>Shipping</div>
                             <div><strong>FREE</strong></div>
                         </div>
                         <div class="order-col">
                             <div><strong>TOTAL</strong></div>
-                            <div><strong class="order-total">$2940.00</strong></div>
+                            <div><strong class="order-total">${{$total}}</strong></div>
                         </div>
                     </div>
 
-                    <div class="input-checkbox">
-                        <input type="checkbox" id="terms">
-                        <label for="terms">
-                            <span></span>
-                            I've read and accept the <a href="#">terms & conditions</a>
-                        </label>
-                    </div>
                     <a href="#" class="primary-btn order-submit">Place order</a>
                 </div>
                 <!-- /Order Details -->

@@ -154,6 +154,67 @@ class ProductController extends Controller
         return view('main/cart', compact('categories', 'subcategories'));
     }
 
+    public function addToCart(Product $product) {
+        if (!$product) {
+            abort(404);
+        }
+
+        $cart = session()->get('cart');
+
+        $newPrice = $product->price * (1 - $product->discount / 100);
+
+        if(!$cart) {
+            $cart = [
+                $product->id => [
+                    'name' => $product->name,
+                    'quantity' => 1,
+                    'price' => $newPrice
+                ]
+            ];
+
+            session()->put('cart', $cart);
+
+            return redirect()->back()->with('success', 'Product added to cart successfully!');
+        }
+
+        if (isset($cart[$product->id])) {
+            $cart[$product->id]['quantity']++;
+            session()->put('cart', $cart);
+            return redirect()->back()->with('success', 'Product added to cart successfully!');
+        }
+
+        $cart[$product->id] = [
+            'name' => $product->name,
+            'quantity' => 1,
+            'price' => $newPrice
+        ];
+
+        session()->put('cart', $cart);
+
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
+    }
+
+    public function updateCart(Request $request) {
+        if($request['id'] and $request['quantity']) {
+            $cart = session()->get('cart');
+            $cart[$request['id']]['quantity'] = $request['quantity'];
+            session()->put('cart', $cart);
+            session()->flash('success', 'Cart updated successfully');
+        }
+    }
+
+    public function removeFromCart(Request $request)
+    {
+        if($request['id']) {
+            $cart = session()->get('cart');
+            if(isset($cart[$request['id']])) {
+                unset($cart[$request['id']]);
+                session()->put('cart', $cart);
+            }
+            session()->flash('success', 'Product removed successfully');
+        }
+    }
+
     public function search() {
 
     }

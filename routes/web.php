@@ -106,13 +106,16 @@ Route::group(['middleware'=>['auth']], function () {
     //MAIN
         Route::get('account/{user}', [UserController::class, 'edit']);
         Route::post('addrating', [RatingController::class, 'store']);
+        Route::get('cart', [ProductController::class, 'cart']);
+        Route::get('addtocart/{product}', [ProductController::class, 'addToCart']);
+        Route::patch('updatecart', [ProductController::class, 'updateCart']);
+        Route::delete('removefromcart', [ProductController::class, 'removeFromCart']);
 
 });
 
 
 Route::get('catalog/{subCategory}', [ProductController::class, 'catalog']);
 Route::get('view/{product}', [ProductController::class, 'show']);
-Route::get('cart', [ProductController::class, 'cart']);
 
 //Auth
 Route::get('login', [AuthController::class, 'login'])->name('login');
