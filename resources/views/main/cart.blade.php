@@ -9,7 +9,7 @@
             <div class="row">
 
                 <!-- Order Details -->
-                <div class="col-md-5 order-details">
+                <div class="col-md-6 order-details">
                     <div class="section-title text-center">
                         <h3 class="title">Your Order</h3>
                     </div>
@@ -26,22 +26,26 @@
                                     <?php $total += $details['price'] * $details['quantity'] ?>
                                     <div class="order-col">
                                         <div><b>{{$details['quantity']}}x</b> {{$details['name']}}</div>
-                                        <div>{{$details['price']}}</div>
+                                        <div>{{$details['price']}}€</div>
                                         <div class="product-details">
                                             <div class="add-to-cart">
                                                 <div class="qty-label">
                                                     <div class="input-number">
                                                         <form action="{{url('updatecart')}}" method="POST">
-                                                            <input type="hidden" value="{{$product}}" name="id" readonly>
-                                                            <input type="number" value="{{$details['quantity']}}" name="quantity">
+                                                            @csrf
+                                                            <input type="hidden" value="{{$product}}" name="product" readonly>
+                                                            <input type="number" value="{{$details['quantity']}}" name="quantity" onchange="submit();">
                                                             <span class="qty-up">+</span>
                                                             <span class="qty-down">-</span>
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <button class="add-to-cart-btn"><i class="fa fa-remove"></i>remove</button>
                                             </div>
                                         </div>
+                                        <form action="{{url('removefromcart/'.$product)}}" method="POST">
+                                            @csrf
+                                            <input type="submit" class="primary-btn" value="X" name="id">
+                                        </form>
                                     </div>
                                 @endforeach
                             @endif
@@ -56,7 +60,7 @@
                         </div>
                     </div>
 
-                    <a href="#" class="primary-btn order-submit">Place order</a>
+                    <a href="{{url('checkout')}}" class="primary-btn order-submit">Place order</a>
                 </div>
                 <!-- /Order Details -->
             </div>

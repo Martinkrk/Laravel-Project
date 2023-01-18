@@ -5,7 +5,7 @@
 <div class="section">
     <!-- container -->
     <div class="container">
-                <form action="{{url('catalog/'. $subCategory->id)}}" method="GET">
+                <form action="{{url('search')}}" method="GET">
         <!-- row -->
         <div class="row">
             <!-- ASIDE -->
@@ -38,8 +38,6 @@
                     <!-- aside Widget -->
                     <div class="aside">
                         @foreach($filters as $filter)
-
-
                             @foreach($filterValues as $filterValueHeading)
                                 @if($filter->id == $filterValueHeading->filter_id)
                                     <h3 class="aside-title">{{$filter->name}}</h3>

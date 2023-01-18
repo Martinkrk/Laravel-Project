@@ -6,8 +6,10 @@ use App\Models\Category;
 use App\Models\Filter;
 use App\Models\Image;
 use App\Models\ProductFilter;
+use App\Models\Rating;
 use App\Models\SubCategory;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -83,8 +85,10 @@ class ProductController extends Controller
         $productfilters = ProductFilter::where('product_id', '=', $product->id)->get();
         $productfilterhalf = ceil(count($productfilters)/2)+1;
         $filters = Filter::get();
+        $ratings = Rating::where('product_id', '=', $product->id)->orderBy('updated_at', 'desc')->paginate(3);
+        $users = User::whereIn('id', $ratings->pluck('user_id'))->get();
 
-        return view('main/view', compact('categories', 'subcategories', 'images', 'product', 'productsubcategory', 'productfilters', 'filters', 'productfilterhalf'));
+        return view('main/view', compact('categories', 'subcategories', 'images', 'product', 'productsubcategory', 'productfilters', 'filters', 'productfilterhalf', 'ratings', 'users'));
     }
 
     /**
@@ -195,27 +199,150 @@ class ProductController extends Controller
     }
 
     public function updateCart(Request $request) {
-        if($request['id'] and $request['quantity']) {
+        if($request['product'] and $request['quantity']) {
             $cart = session()->get('cart');
-            $cart[$request['id']]['quantity'] = $request['quantity'];
+            $cart[$request['product']]['quantity'] = $request['quantity'];
             session()->put('cart', $cart);
-            session()->flash('success', 'Cart updated successfully');
         }
+        return redirect('cart')->with('success', 'Cart updated successfully');
     }
 
-    public function removeFromCart(Request $request)
+    public function removeFromCart(Request $request, int $id)
     {
-        if($request['id']) {
+        if($id) {
             $cart = session()->get('cart');
-            if(isset($cart[$request['id']])) {
-                unset($cart[$request['id']]);
+            if(isset($cart[$id])) {
+                unset($cart[$id]);
                 session()->put('cart', $cart);
             }
-            session()->flash('success', 'Product removed successfully');
         }
+        return redirect('cart')->with('success', 'Product removed successfully');
     }
 
-    public function search() {
+    public function checkout() {
+        $products = Product::get();
+        $cart = session()->get('cart');
+        foreach ($products as $product) {
+            if(array_key_exists($product->id, $cart)) {
+                $product->update([
+                    'bought' => $product->bought + $cart[$product->id]['quantity'],
+                    'stock' => $product->stock - $cart[$product->id]['quantity']
+                ]);
+            }
+        }
+        session()->forget('cart');
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
+    }
+
+    public function search(Request $request) {
+        //PRODUCTS AND CATEGORIES
+        $categories = Category::get();
+        $subcategories = SubCategory::get();
+        $productsinstock = Product::where('stock', '>', '0')
+            ->get();
+
+        //SHOW AND SORT
+        //show
+        $shows = ['2','4'];
+        if ($request['show'] != null) {
+            $selectedshow = $request['show'];
+        }
+        else {
+            $selectedshow = $shows[0];
+        }
+
+        //sort
+        $sorts = ['Popular', 'New', 'Price (low to high)', 'Price (high to low)'];
+
+        if ($request['sort'] != null) {
+            $selectedsort = $request['sort'];
+        }
+        else {
+            $selectedsort = $sorts[0];
+        }
+
+        $sortquery = ['', 'desc'];
+        if ($selectedsort == 'Popular') {
+            $sortquery[0] = 'bought';
+        }
+        elseif ($selectedsort == 'New') {
+            $sortquery[0] = 'updated_at';
+        }
+        elseif ($selectedsort == 'Price (low to high)') {
+            $sortquery[0] = 'price';
+            $sortquery[1] = 'asc';
+        }
+        elseif ($selectedsort == 'Price (high to low)') {
+            $sortquery[0] = 'price';
+        }
+        else {
+            $sortquery = ['bought', 'desc'];
+        }
+
+        $checkedfilters = null;
+        $checkedcategoryfilters = null;
+
+        if ($request['search'] != null) {
+            $searchText = $request['search'];
+            $products = Product::where('name', 'like', '%'.$searchText.'%')
+                ->where('stock', '>', '0')
+                ->orderBy($sortquery[0], $sortquery[1])
+                ->paginate($selectedshow)
+                ->appends(request()->query());
+        }
+        elseif ($request['filters'] != null || $request['categoryfilters'] != null) {
+            $checkedfilters = $request['filters'];
+            $qb = DB::table('product_filter');
+            if ($request['filters'] != null) {
+                foreach ($checkedfilters as $rf) {
+                    $rf = explode('*', $rf);
+                    $qb->orWhere(function ($query) use ($rf) {
+                        $query->where('filter_id', '=', $rf[0])
+                            ->where('filtervalue', '=', $rf[1]);
+                    });
+                }
+            }
+            if ($request['categoryfilters'] != null) {
+                $checkedcategoryfilters = $request['categoryfilters'];
+                $qb->whereIn('subcategory_id', $request['categoryfilters']);
+            }
+
+            $productfilters = $qb->select('product_id');
+            $products = Product::whereIn('id', $productfilters)
+                ->where('stock', '>', '0')
+                ->orderBy($sortquery[0], $sortquery[1])
+                ->paginate($selectedshow)
+                ->appends(request()->query());
+        }
+        else {
+            $products = Product::where('stock', '>', '0')
+                ->orderBy($sortquery[0], $sortquery[1])
+                ->paginate($selectedshow)
+                ->appends(request()->query());
+        }
+
+        $selectedfilters = DB::table('product_filter')
+            ->select('filter_id')
+            ->distinct()
+            ->whereIn('product_id', $productsinstock->map(function ($prod) {
+                return collect($prod->toArray())
+                    ->only(['id'])
+                    ->all();
+            }));
+
+        $filters = Filter::whereIn('id', $selectedfilters)->get();
+
+        $filterValues = DB::table('product_filter')
+            ->select('filter_id', 'filtervalue')
+            ->whereIn('product_id', $productsinstock->map(function ($prod) {
+                return collect($prod->toArray())
+                    ->only(['id'])
+                    ->all();
+            }))
+            ->groupByRaw('filtervalue, filter_id')
+            ->get();
+
+        return view('main/search', compact('categories', 'subcategories', 'products', 'filters', 'filterValues', 'checkedfilters', 'shows', 'selectedshow', 'sorts', 'selectedsort', 'checkedcategoryfilters'));
 
     }
 

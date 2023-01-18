@@ -98,9 +98,9 @@
                                         </p>
                                         <h3 class="product-name"><a href="{{url('view/'.$topproductItem->id)}}">{{$topproductItem->name}}</a></h3>
                                         @if($topproductItem->discount)
-                                            <h4 class="product-price">{{$topproductItem->price * (1 - $topproductItem->discount / 100)}} <del class="product-old-price">{{$topproductItem->price}}</del></h4>
+                                            <h4 class="product-price">{{$topproductItem->price * (1 - $topproductItem->discount / 100)}}€ <del class="product-old-price">{{$topproductItem->price}}€</del></h4>
                                         @else
-                                            <h4 class="product-price">{{$topproductItem->price}}</h4>
+                                            <h4 class="product-price">{{$topproductItem->price}}€</h4>
                                         @endif
                                         <div class="product-rating">
                                             <i class="fa fa-star"></i>
