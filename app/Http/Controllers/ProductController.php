@@ -86,9 +86,10 @@ class ProductController extends Controller
         $productfilterhalf = ceil(count($productfilters)/2)+1;
         $filters = Filter::get();
         $ratings = Rating::where('product_id', '=', $product->id)->orderBy('updated_at', 'desc')->paginate(3);
+        $ratingscount = count(Rating::where('product_id', '=', $product->id)->get());
         $users = User::whereIn('id', $ratings->pluck('user_id'))->get();
 
-        return view('main/view', compact('categories', 'subcategories', 'images', 'product', 'productsubcategory', 'productfilters', 'filters', 'productfilterhalf', 'ratings', 'users'));
+        return view('main/view', compact('categories', 'subcategories', 'images', 'product', 'productsubcategory', 'productfilters', 'filters', 'productfilterhalf', 'ratings', 'users', 'ratingscount'));
     }
 
     /**
@@ -150,6 +151,12 @@ class ProductController extends Controller
     }
 
     //MAIN
+
+    public function resetReview(int $product, int $user)
+    {
+        Rating::where('user_id', '=', $user)->where('product_id', '=', $product)->delete();
+        return redirect('view/'.$product);
+    }
 
     public function cart() {
         $categories = Category::get();
@@ -296,7 +303,7 @@ class ProductController extends Controller
             if ($request['filters'] != null) {
                 foreach ($checkedfilters as $rf) {
                     $rf = explode('*', $rf);
-                    $qb->orWhere(function ($query) use ($rf) {
+                    $qb->where(function ($query) use ($rf) {
                         $query->where('filter_id', '=', $rf[0])
                             ->where('filtervalue', '=', $rf[1]);
                     });

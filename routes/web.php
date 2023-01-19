@@ -104,8 +104,10 @@ Route::group(['middleware'=>['auth']], function () {
 
 
     //MAIN
-        Route::get('account/{user}', [UserController::class, 'edit']);
+        Route::get('account/{user}', [UserController::class, 'profileView']);
+        Route::post('changepassword', [UserController::class, 'changePassword']);
         Route::post('addrating', [RatingController::class, 'store']);
+        Route::get('resetreview/{product}/{user}', [ProductController::class, 'resetReview']);
         Route::get('cart', [ProductController::class, 'cart']);
         Route::get('addtocart/{product}', [ProductController::class, 'addToCart']);
         Route::post('updatecart', [ProductController::class, 'updateCart']);
@@ -124,4 +126,5 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'authenticate']);
 Route::get('logout', [AuthController::class, 'logout']);
 Route::get('signup', [AuthController::class, 'signup']);
+Route::post('signup', [UserController::class, 'store']);
 

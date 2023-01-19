@@ -70,7 +70,7 @@
                             @if(count($ratings) < 1)
                                 <a class="review-link">No reviews</a>
                             @else
-                                <a class="review-link">{{count($ratings)}} Review(s)</a>
+                                <a class="review-link">{{$ratingscount}} Review(s)</a>
                             @endif
                         @endif
                     </div>
@@ -111,8 +111,8 @@
                     <ul class="tab-nav">
                         <li class="active"><a data-toggle="tab" href="#tab1">Details</a></li>
                         <li><a data-toggle="tab" href="#tab2">Reviews
-                                @if($ratings != null and count($ratings) > 0)
-                                    ({{count($ratings)}})
+                                @if($ratingscount != null and $ratingscount > 0)
+                                    ({{$ratingscount}})
                                 @endif
                             </a></li>
                     </ul>
@@ -187,11 +187,11 @@
                                                 <div class="rating-progress">
                                                     <div style="width:
                                                     @if($five > 0)
-                                                    {{($five / ($one+$two+$three+$four+$five))*100}}
+                                                    {{($five / ($one+$two+$three+$four+$five))*100}}%
                                                     @else
-                                                    0
+                                                    0%
                                                     @endif
-                                                    %;"></div>
+                                                    ;"></div>
                                                 </div>
                                                 <span class="sum">{{$five}}</span>
                                             </li>
@@ -206,11 +206,11 @@
                                                 <div class="rating-progress">
                                                     <div style="width:
                                                     @if($four > 0)
-                                                    {{($four / ($one+$two+$three+$four+$five))*100}}
+                                                    {{($four / ($one+$two+$three+$four+$five))*100}}%
                                                     @else
-                                                    0
+                                                    0%
                                                     @endif
-                                                    %;"></div>
+                                                    ;"></div>
                                                 </div>
                                                 <span class="sum">{{$four}}</span>
                                             </li>
@@ -225,11 +225,12 @@
                                                 <div class="rating-progress">
                                                     <div style="width:
                                                     @if($three > 0)
-                                                    {{($three / ($one+$two+$three+$four+$five))*100}}
+                                                    {{($three / ($one+$two+$three+$four+$five))*100}}%
                                                     @else
-                                                    0
+                                                    0%
                                                     @endif
-                                                    %;"></div>
+                                                    ">
+                                                    </div>
                                                 </div>
                                                 <span class="sum">{{$three}}</span>
                                             </li>
@@ -244,11 +245,11 @@
                                                 <div class="rating-progress">
                                                     <div style="width:
                                                     @if($two > 0)
-                                                    {{($two / ($one+$two+$three+$four+$five))*100}}
+                                                    {{($two / ($one+$two+$three+$four+$five))*100}}%
                                                     @else
-                                                    0
+                                                    0%
                                                     @endif
-                                                    %;"></div>
+                                                    ;"></div>
                                                 </div>
                                                 <span class="sum">{{$two}}</span>
                                             </li>
@@ -263,11 +264,11 @@
                                                 <div class="rating-progress">
                                                     <div style="width:
                                                     @if($one > 0)
-                                                    {{($one / ($one+$two+$three+$four+$five))*100}}
+                                                    {{($one / ($one+$two+$three+$four+$five))*100}}%
                                                     @else
-                                                    0
+                                                    0%
                                                     @endif
-                                                    %;"></div>
+                                                    ;"></div>
                                                 </div>
                                                 <span class="sum">{{$one}}</span>
                                             </li>
@@ -281,7 +282,7 @@
                                     <div id="reviews">
                                         <ul class="reviews">
                                             @foreach($ratings as $ratingItem)
-                                                @if($ratingItem->user_id == Auth::user()->id)
+                                                @if(Auth::check() and $ratingItem->user_id == Auth::user()->id)
                                                     <?php $yourRating = $ratingItem->rating ?>
                                                 @endif
                                                 <li>

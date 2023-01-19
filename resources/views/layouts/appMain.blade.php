@@ -44,15 +44,15 @@
             <ul class="header-links pull-left">
                 <li><a href="#"><i class="fa fa-phone"></i> 57865775</a></li>
                 <li><a href="#"><i class="fa fa-envelope-o"></i> Martin.Gerstman@ivkhk.ee</a></li>
-                <li><a href="#"><i class="fa fa-facebook"></i>Facebook</a></li>
-                <li><a href="#"><i class="fa fa-wordpress"></i>Wordpress</a></li>
+                <li><a href="https://www.facebook.com/"><i class="fa fa-facebook"></i>Facebook</a></li>
+                <li><a href="https://wordpress.com/"><i class="fa fa-wordpress"></i>Wordpress</a></li>
             </ul>
             <ul class="header-links pull-right">
                 @if(Auth::check())
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                         <li><a href="{{url('dashboard')}}"><i class="fa fa-columns"></i>Admin Panel</a></li>
                     @endif
-                    <li><a href="{{url('profile/'.Auth::user()->id)}}"><i class="fa fa-user-o"></i>{{Auth::user()->name}}</a></li>
+                    <li><a href="{{url('account/'.Auth::user()->id)}}"><i class="fa fa-user-o"></i>{{Auth::user()->name}}</a></li>
                         <li><a href="{{url('logout')}}"><i class="fa fa-sign-out"></i>Log Out</a></li>
                 @else
                     <li><a href="{{url('login')}}"><i class="fa fa-user-o"></i>Log In</a></li>
@@ -98,7 +98,7 @@
                             <a href="#">
                                 <i class="fa fa-heart-o"></i>
                                 <span>Your Wishlist</span>
-                                <div class="qty">2</div>
+                                <div class="qty">X</div>
                             </a>
                         </div>
                         <!-- /Wishlist -->
@@ -180,7 +180,7 @@
                 <div class="col-md-3 col-xs-6">
                     <div class="footer">
                         <h3 class="footer-title">About Us</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
+                        <p>We sell stuff</p>
                         <ul class="footer-links">
                             <li><a href="#"><i class="fa fa-phone"></i>57865775</a></li>
                             <li><a href="#"><i class="fa fa-envelope-o"></i>Martin.Gerstman@ivkhk.ee</a></li>
@@ -192,10 +192,10 @@
                     <div class="footer">
                         <h3 class="footer-title">Categories</h3>
                         <ul class="footer-links">
-                            <li><a href="#">Laptops</a></li>
-                            <li><a href="#">Smartphones</a></li>
-                            <li><a href="#">Cameras</a></li>
-                            <li><a href="#">Accessories</a></li>
+                            <li><a href="{{url('catalog/2')}}">Laptops</a></li>
+                            <li><a href="{{url('catalog/3')}}">Smartphones</a></li>
+                            <li><a href="{{url('catalog/11')}}">Cameras</a></li>
+                            <li><a href="{{url('catalog/8')}}">Accessories</a></li>
                         </ul>
                     </div>
                 </div>
@@ -216,8 +216,10 @@
                     <div class="footer">
                         <h3 class="footer-title">Service</h3>
                         <ul class="footer-links">
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">View Cart</a></li>
+                            @if(Auth::check())
+                            <li><a href="{{url('account/'.Auth::user()->id)}}">My Account</a></li>
+                            @endif
+                            <li><a href="{{url('cart')}}">View Cart</a></li>
                             <li><a href="#">Wishlist</a></li>
                         </ul>
                     </div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Role;
+use App\Models\SubCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -21,6 +23,29 @@ class UserController extends Controller
         $roles = Role::get();
         $users = User::get();
         return view('adminpanel/users.index', compact('roles', 'users'));
+    }
+
+    public function profileView()
+    {
+        $categories = Category::get();
+        $subcategories = SubCategory::get();
+
+        return view('main/account', compact('categories', 'subcategories'));
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required'
+        ]);
+
+        $user = User::where('email', '=', $request->email)->first();
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return redirect('account/'.$user->id);
     }
 
     /**
@@ -49,12 +74,23 @@ class UserController extends Controller
             'password_confirmation' => 'required'
         ]);
 
-        User::create([
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => $request->role_id,
-            'name' => $request->name
-        ]);
+        if ($request->role_id != null) {
+            User::create([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role_id' => $request->role_id,
+                'name' => $request->name
+            ]);
+        }
+        else {
+            User::create([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role_id' => 3,
+                'name' => $request->name
+            ]);
+        }
+
         return redirect('users');
     }
 
