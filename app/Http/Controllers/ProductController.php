@@ -56,6 +56,8 @@ class ProductController extends Controller
         ]);
 
         $data = $request->all();
+        $data['image'] = $data['image']->getClientOriginalName();
+        $request['image']->move('../public/images/', $data['image']);
         $product = Product::create($data);
 
         foreach (($request->file('images')) as $imagefile) {

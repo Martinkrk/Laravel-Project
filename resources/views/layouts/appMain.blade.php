@@ -96,9 +96,9 @@
                         <!-- Wishlist -->
                         <div>
                             <a href="#">
-                                <i class="fa fa-heart-o"></i>
+                                <i class="fa fa-heart"></i>
                                 <span>Your Wishlist</span>
-                                <div class="qty">X</div>
+{{--                                <div class="qty">X</div>--}}
                             </a>
                         </div>
                         <!-- /Wishlist -->

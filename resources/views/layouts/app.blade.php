@@ -62,14 +62,14 @@
                 </div>
             </li>
 
-            <li class="nav-item menu-items">
-                <a class="nav-link" href="{{url('commentsadmin')}}">
-              <span class="menu-icon">
-                <i class="mdi mdi-comment"></i>
-              </span>
-                    <span class="menu-title">Comments</span>
-                </a>
-            </li>
+{{--            <li class="nav-item menu-items">--}}
+{{--                <a class="nav-link" href="{{url('commentsadmin')}}">--}}
+{{--              <span class="menu-icon">--}}
+{{--                <i class="mdi mdi-comment"></i>--}}
+{{--              </span>--}}
+{{--                    <span class="menu-title">Comments</span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
 
             @if(Gate::allows('isAdmin'))
             <li class="nav-item menu-items">
@@ -88,6 +88,15 @@
                 </div>
             </li>
             @endif
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{url('/')}}">
+              <span class="menu-icon">
+                <i class="mdi mdi-page-next"></i>
+              </span>
+                    <span class="menu-title">Main Page</span>
+                </a>
+            </li>
 
         </ul>
     </nav>
