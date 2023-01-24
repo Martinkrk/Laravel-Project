@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Manage Products and all views associated with them.
+ *
+ * @author Martin Gerstman JKTV21 <martin.gerstman@ivkhk.ee>.
+ * @copyright Copyright 2023.
+ */
+
 namespace App\Http\Controllers;
 
 use App\Models\Category;
@@ -12,7 +19,6 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\View\View;
 
 class ProductController extends Controller
 {
@@ -32,7 +38,7 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -44,7 +50,7 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -76,7 +82,7 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show(Product $product)
     {
@@ -98,7 +104,7 @@ class ProductController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(Product $product)
     {
@@ -112,7 +118,7 @@ class ProductController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, Product $product)
     {
@@ -144,7 +150,7 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy(Product $product)
     {
@@ -154,12 +160,24 @@ class ProductController extends Controller
 
     //MAIN
 
+    /**
+     * Delete review
+     *
+     * @param int $product Product linked to a review
+     * @param int $user User linked to a review
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function resetReview(int $product, int $user)
     {
         Rating::where('user_id', '=', $user)->where('product_id', '=', $product)->delete();
         return redirect('view/'.$product);
     }
 
+    /**
+     * Display a product cart
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function cart() {
         $categories = Category::get();
         $subcategories = SubCategory::get();
@@ -167,6 +185,14 @@ class ProductController extends Controller
         return view('main/cart', compact('categories', 'subcategories'));
     }
 
+    /**
+     * Add a product to cart and store via sessions
+     *
+     * @param Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function addToCart(Product $product) {
         if (!$product) {
             abort(404);
@@ -207,6 +233,14 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
+    /**
+     * Update products and their quantity in a cart via sessions
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function updateCart(Request $request) {
         if($request['product'] and $request['quantity']) {
             $cart = session()->get('cart');
@@ -216,6 +250,15 @@ class ProductController extends Controller
         return redirect('cart')->with('success', 'Cart updated successfully');
     }
 
+    /**
+     * Remove products from cart via sessions
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function removeFromCart(Request $request, int $id)
     {
         if($id) {
@@ -228,6 +271,13 @@ class ProductController extends Controller
         return redirect('cart')->with('success', 'Product removed successfully');
     }
 
+    /**
+     * Clear a cart and update product's information, such as it's quantity and amount in stock
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function checkout() {
         $products = Product::get();
         $cart = session()->get('cart');
@@ -243,6 +293,12 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
+    /**
+     * Display a search view that uses no separation by subcategories
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function search(Request $request) {
         //PRODUCTS AND CATEGORIES
         $categories = Category::get();
@@ -355,6 +411,13 @@ class ProductController extends Controller
 
     }
 
+    /**
+     * Display a catalog of all products separated by a subcategory.
+     *
+     * @param Request $request contains filter, sort and show information
+     * @param SubCategory $subCategory
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function catalog(Request $request, SubCategory $subCategory)
     {
         //PRODUCTS AND CATEGORIES

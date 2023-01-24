@@ -7,12 +7,15 @@ use App\Models\Product;
 use App\Models\ProductFilter;
 use Illuminate\Http\Request;
 
+/**
+ * ProductFilter
+ */
 class ProductFilterController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -25,7 +28,7 @@ class ProductFilterController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -38,7 +41,7 @@ class ProductFilterController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -93,7 +96,7 @@ class ProductFilterController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\ProductFilter  $productFilter
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy(ProductFilter $productFilter)
     {

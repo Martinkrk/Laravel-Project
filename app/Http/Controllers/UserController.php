@@ -6,17 +6,23 @@ use App\Models\Category;
 use App\Models\Role;
 use App\Models\SubCategory;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 use Hash;
 use Auth;
+use Illuminate\Routing\Redirector;
 
+/**
+ * User
+ */
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -25,6 +31,9 @@ class UserController extends Controller
         return view('adminpanel/users.index', compact('roles', 'users'));
     }
 
+    /**
+     * @return Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function profileView()
     {
         $categories = Category::get();
@@ -33,6 +42,10 @@ class UserController extends Controller
         return view('main/account', compact('categories', 'subcategories'));
     }
 
+    /**
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     */
     public function changePassword(Request $request)
     {
         $request->validate([
@@ -51,7 +64,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -63,7 +76,7 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
